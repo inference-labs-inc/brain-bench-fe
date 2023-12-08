@@ -1,43 +1,74 @@
 'use client'
 
-import Image from 'next/image'
-import { Flex, Center, Text, Container, Heading, Button, useColorModeValue, HStack, Box, Spacer, Stack, Link, Divider, Alert, AlertIcon, Icon } from '@chakra-ui/react'
-import { WarningIcon, InfoIcon } from '@chakra-ui/icons'
-import logo from '@/img/logo.png'
-import { MdInfo } from 'react-icons/md'
-import { ResultsTable } from '@/components/ResultsTable'
-import { M_PLUS_Rounded_1c } from 'next/font/google'
 import { ColorModeSwitcher } from '@/components/ColorModeSwitcher'
-import Faq from '../mkd/faq.mdx'
-import { PoweredBy } from '@/components/PoweredBy'
+import { ResultsTable } from '@/components/ResultsTable'
 import x from '@/img/X.png'
-import vitalik from '@/img/vitalik-zk-bench.gif'
-
-
-const rounded = M_PLUS_Rounded_1c({ subsets: ['latin'], weight: ['700'], fallback: ['SF Rounded'] })
+import logo_dark from '@/img/logo/Dark.svg'
+import logo_light from '@/img/logo/Light.svg'
+import { ExternalLinkIcon, InfoIcon, WarningIcon } from '@chakra-ui/icons'
+import {
+  Alert,
+  AlertIcon,
+  Box,
+  Button,
+  Center,
+  Flex,
+  HStack,
+  Heading,
+  Link,
+  Spacer,
+  Stack,
+  Text,
+  VStack,
+  useColorModeValue,
+} from '@chakra-ui/react'
+import Image from 'next/image'
+import bench_dark from '../img/bench_dark.svg'
+import bench_light from '../img/bench_light.svg'
+import Faq from '../mkd/faq.mdx'
 
 export default function Home() {
+  const logo = useColorModeValue(logo_light, logo_dark)
+  const bench = useColorModeValue(bench_light, bench_dark)
   return (
     <main>
       <Box mb={20}>
         <Flex>
-          <Spacer />
-          <HStack p={3}>
-            <ColorModeSwitcher />
-            <Button as='a' href='https://twitter.com/polybase_xyz' target='_blank' size='sm' background='blackAlpha.900' color='white' _hover={{ background: 'blackAlpha.800' }} _active={{ background: 'blackAlpha.700' }} colorScheme='white'>
+          <Box px={4}>
+            <Box as={VStack} justify='start' align='start' spacing={4} p={4}>
+              <Heading fontSize='xx-large'>
+                ch<sub>AI</sub>nBench
+              </Heading>
               <HStack>
-                <Image width={20} src={x} alt='X Logo' />
-                <Text>Follow</Text>
+                <Heading fontSize='medium'>By</Heading>
+                <Flex maxW={125}>
+                  <Link
+                    priority
+                    loading='eager'
+                    as={Image}
+                    alt='Inference Labs'
+                    href='https://inferencelabs.com'
+                    target='_blank'
+                    src={logo}
+                  />
+                </Flex>
               </HStack>
+            </Box>
+          </Box>
+          <Spacer />
+          <HStack p={3} align='start'>
+            <Button
+              as={Link}
+              rightIcon={<ExternalLinkIcon />}
+              textDecoration='none !important'
+              variant='ghost'
+              href='https://github.com/inference-labs-inc/zkmlBench'
+              target='_blank'
+              fontWeight='600'
+            >
+              Bring Your Own Benchmarks
             </Button>
-            <Box pr={2}>
-              <Link as='a' href='https://github.com/polybase/zk-benchmarks' target='_blank' fontWeight='600'>
-                                github
-              </Link>
-            </Box>
-            <Box>
-              <PoweredBy />
-            </Box>
+            <ColorModeSwitcher />
           </HStack>
         </Flex>
         <Box p={4}>
@@ -45,18 +76,17 @@ export default function Home() {
             <Box p={2}>
               <Center>
                 <Stack spacing={4}>
-                  <Center>
-                    <HStack>
-                      <Image width={50} height={50} alt='zk-bench' src={logo} />
-                      <Heading as='h1' fontWeight={700} fontFamily={rounded.style.fontFamily}>zk-bench</Heading>
-                    </HStack>
-                  </Center>
-                  <Stack>
-                    <Heading as='h2' fontSize='lg' fontFamily={rounded.style.fontFamily} textAlign='center'>Impartial benchmarks for your favourite ZK frameworks</Heading>
-                    <Heading as='h3' fontSize='md' textAlign='center' fontWeight='normal'>(if it’s not fair, <Link as='a' href='https://github.com/polybase/zk-benchmarks' target='_blank' color={useColorModeValue('blue.600', 'blue.200')}>raise a PR!</Link>)</Heading>
-                  </Stack>
-                  <Center>
-                    <Image src={vitalik} alt='vitalik bench' width={400} />
+                  <Center as={VStack} spacing={16} pb={16}>
+                    <Image
+                      src={bench}
+                      alt='zkml bench'
+                      width={125}
+                      style={{ userSelect: 'none' }}
+                      draggable={false}
+                    />
+                    <Heading as='h1' fontSize='x-large'>
+                      Your benchmark for on-chain inference
+                    </Heading>
                   </Center>
                 </Stack>
               </Center>
@@ -67,22 +97,46 @@ export default function Home() {
                 <Box>
                   <Alert status='warning' borderRadius={5}>
                     <AlertIcon />
-                    <Text fontSize='md' fontWeight='bold'>We provide important caveats in the info <WarningIcon color='orange.400' /> and <InfoIcon color='gray.400' /> buttons</Text>
+                    <Text fontSize='md' fontWeight='bold'>
+                      We provide important caveats in the info{' '}
+                      <WarningIcon color='orange.400' /> and{' '}
+                      <InfoIcon color='gray.400' /> buttons
+                    </Text>
                   </Alert>
                 </Box>
               </Stack>
             </Box>
             <Box maxW='container.md' width='100%' margin='0 auto' p={2}>
-              <Stack bg='bw.50' borderRadius={10} textAlign='center' padding={10} spacing={4} mt={10}>
+              <Stack
+                bg='bw.50'
+                borderRadius={10}
+                textAlign='center'
+                padding={10}
+                spacing={4}
+                mt={10}
+              >
                 <Stack>
-                  <Heading fontFamily={rounded.style.fontFamily}>Follow us on <Text as='span' textDecoration='line-through'>Twitter</Text> X</Heading>
-                  <Heading fontSize='xl' color='bw.700'>To get updates on zk-bench follow the Polybase Labs team.</Heading>
+                  <Heading>Follow us on &#120143;</Heading>
+                  <Heading fontSize='xl' color='bw.700'>
+                    Follow the Inference Labs team to get updates ch
+                    <sub>AI</sub>nBench.
+                  </Heading>
                 </Stack>
                 <Center>
-                  <Button as='a' href='https://twitter.com/polybase_xyz' target='_blank' size='lg' background='blackAlpha.900' color='white' _hover={{ background: 'blackAlpha.800' }} _active={{ background: 'blackAlpha.700' }} colorScheme='white'>
+                  <Button
+                    as='a'
+                    href='https://twitter.com/inference_labs'
+                    target='_blank'
+                    size='lg'
+                    background='blackAlpha.900'
+                    color='white'
+                    _hover={{ background: 'blackAlpha.800' }}
+                    _active={{ background: 'blackAlpha.700' }}
+                    colorScheme='white'
+                  >
                     <HStack>
                       <Image width={22} src={x} alt='X Logo' />
-                      <Text>@polybase_xyz</Text>
+                      <Text>@inference_labs</Text>
                     </HStack>
                   </Button>
                 </Center>
@@ -94,6 +148,6 @@ export default function Home() {
           </Stack>
         </Box>
       </Box>
-    </main >
+    </main>
   )
 }

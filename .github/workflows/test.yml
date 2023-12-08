@@ -4,65 +4,11 @@ on:
   push:
     paths:
       - .github/workflows/benchmarks.yml
-      - polylang/Cargo.lock
-      - polylang/benches/bench.rs
-      - miden/Cargo.lock
-      - miden/benches/bench.rs
-      - risc-zero/host/Cargo.toml
-      - risc-zero/host/benches/bench.rs
-      - noir/benches/bench.rs
-      - noir/Cargo.lock
+      - mnist_ezkl/Cargo.lock
+      - mnist_ezkl/benches/bench.rs
 
 jobs:
-  polylang:
-    runs-on: ubuntu-latest-64-cores
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - uses: Swatinem/rust-cache@v2
-
-    - name: Cargo fmt check
-      run:  cargo fmt --check
-      working-directory: ./polylang
-
-    - name: Cargo check
-      run:  cargo check --all-targets
-      working-directory: ./polylang
-  
-    - name: Run Polylang benchmarks
-      working-directory: ./polylang
-      env:
-        BENCHY_QUICK: "1"
-      run: |
-        cargo bench -F multi-cpu
-
-  miden:
-    runs-on: ubuntu-latest-64-cores
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - uses: Swatinem/rust-cache@v2
-
-    - name: Cargo fmt check
-      run:  cargo fmt --check
-      working-directory: ./miden
-
-    - name: Cargo check
-      run:  cargo check --all-targets
-      working-directory: ./miden
-  
-    - name: Run Miden benchmarks
-      working-directory: ./miden
-      env:
-        BENCHY_QUICK: "1"
-      run: |
-        cargo bench -F multi-cpu
-
-  risc_zero:
+  mnist_ezkl:
     runs-on: ubuntu-latest-64-cores
 
     steps:
@@ -71,99 +17,17 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
 
-      - name: Cache cargo bin
-        uses: actions/cache@v2
-        with:
-          path: ~/.cargo/bin
-          key: ${{ runner.os }}-cargo-bin-${{ hashFiles('**/Cargo.lock') }}
-    
-      - name: Install risczero
-        run: cargo install cargo-risczero && cargo risczero install
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Cargo fmt check
-        run:  cargo fmt --check
-        working-directory: ./risc-zero
+        run: cargo fmt --check
+        working-directory: ./mnist_ezkl
 
       - name: Cargo check
-        run:  cargo check --all-targets
-        working-directory: ./risc-zero/host
-  
-      - name: Run Risc-Zero benchmarks
-        working-directory: ./risc-zero/host
+        run: cargo check --all-targets
+        working-directory: ./mnist_ezkl
+
+      - name: Run MNIST EZKL Benchmarks
+        working-directory: ./mnist_ezkl
         env:
-          BENCHY_QUICK: "1"
+          BENCHY_QUICK: '1'
         run: |
-          cargo bench multi-cpu
-
-  noir:
-    runs-on: ubuntu-latest-64-cores
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - uses: Swatinem/rust-cache@v2
-
-      - name: Cache Nix packages
-        uses: actions/cache@v2
-        with:
-          path: /nix/store
-          key: ${{ runner.os }}-nix-${{ hashFiles('**/shell.nix') }}
-          restore-keys: |
-            ${{ runner.os }}-nix-
-
-      - name: Install Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libllvm14
-
-      - name: Install Nix
-        run: |
-          sh <(curl -L https://nixos.org/nix/install)
-          source $HOME/.nix-profile/etc/profile.d/nix.sh
-
-      - name: Cargo fmt check
-        working-directory: ./noir
-        run:  |
-          source $HOME/.nix-profile/etc/profile.d/nix.sh
-          nix-shell --run "nix-shell -p clang --run 'cargo fmt --check'"
-
-      - name: Cargo check
-        working-directory: ./noir
-        run:  |
-          source $HOME/.nix-profile/etc/profile.d/nix.sh
-          nix-shell --run "nix-shell -p clang --run 'cargo check --all-targets'"
-
-      - name: Run cargo bench in Nix shell
-        working-directory: ./noir
-        env:
-          BENCHY_QUICK: "1"
-        run: |
-          source $HOME/.nix-profile/etc/profile.d/nix.sh
-          nix-shell --run "nix-shell -p clang --run 'cargo bench -q'"
-
-  leo:
-    runs-on: ubuntu-latest-64-cores
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - uses: Swatinem/rust-cache@v2
-
-    - name: Cargo fmt check
-      run:  cargo fmt --check
-      working-directory: ./leo
-
-    - name: Cargo check
-      run:  cargo check --all-targets
-      working-directory: ./leo
-  
-    - name: Run Leo benchmarks
-      working-directory: ./leo
-      env:
-        BENCHY_QUICK: "1"
-      run: |
-        cargo bench
+          cargo bench -F multi-cpu

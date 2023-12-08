@@ -1,14 +1,3 @@
 {
-    "rust-analyzer.linkedProjects": [
-        "./noir/Cargo.toml",
-        "./miden/Cargo.toml",
-        "./risc-zero/methods/Cargo.toml",
-        "./risc-zero/methods/sha/Cargo.toml",
-        "./risc-zero/methods/blake3/Cargo.toml",
-        "./risc-zero/host/Cargo.toml",
-        "./risc-zero/methods/assert/Cargo.toml",
-        "./risc-zero/methods/fib/Cargo.toml",
-        "./polylang/Cargo.toml",
-        "./leo/Cargo.toml"
-    ]
+  "rust-analyzer.linkedProjects": ["./mnist_ezkl/Cargo.toml"]
 }

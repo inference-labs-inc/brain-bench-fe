@@ -1,13 +1,26 @@
 import { extendTheme } from '@chakra-ui/react'
+import { Mulish, Roboto } from 'next/font/google'
 
 const mode = (light: any, _dark: any) => ({ default: light, _dark })
+
+const headingFont = Mulish({
+  subsets: ['latin'],
+  weight: ['700'],
+  fallback: ['Comic Sans MS', 'Comic Sans', 'cursive'],
+})
+
+const bodyFont = Roboto({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  fallback: ['cursive'],
+})
 
 export const theme = extendTheme({
   semanticTokens: {
     colors: {
       error: 'red.500',
       warning: mode('#ca4b03c7', '#cc630887'),
-      'bws': mode('rgba(255, 255, 255)', 'rgba(26, 32, 44)'),
+      bws: mode('rgba(255, 255, 255)', 'rgba(26, 32, 44)'),
       'bws.100': mode('rgba(240, 240, 240)', 'rgba(29, 31, 36)'),
       'bw.10': mode('rgba(0, 0, 0, 0.01)', 'rgba(255, 255, 255, 0.01)'),
       'bw.50': mode('rgba(0, 0, 0, 0.04)', 'rgba(255, 255, 255, 0.04)'),
@@ -20,6 +33,13 @@ export const theme = extendTheme({
       'bw.700': mode('rgba(0, 0, 0, 0.64)', 'rgba(255, 255, 255, 0.64)'),
       'bw.800': mode('rgba(0, 0, 0, 0.80)', 'rgba(255, 255, 255, 0.80)'),
       'bw.900': mode('rgba(0, 0, 0, 0.92)', 'rgba(255, 255, 255, 0.92)'),
+      'body-bg': mode('#F7F8FC', '#1E1F2E'),
     },
+  },
+  fonts: {
+    Mulish: headingFont,
+    Roboto: bodyFont,
+    heading: 'Mulish, Roboto, sans-serif',
+    body: 'Roboto, sans-serif',
   },
 })
