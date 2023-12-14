@@ -5,13 +5,12 @@ import { ResultsTable } from '@/components/ResultsTable'
 import x from '@/img/X.png'
 import logo_dark from '@/img/logo/Dark.svg'
 import logo_light from '@/img/logo/Light.svg'
-import { ExternalLinkIcon, InfoIcon, WarningIcon } from '@chakra-ui/icons'
+import { ExternalLinkIcon } from '@chakra-ui/icons'
 import {
-  Alert,
-  AlertIcon,
   Box,
   Button,
   Center,
+  Image as ChakraImage,
   Flex,
   HStack,
   Heading,
@@ -62,7 +61,7 @@ export default function Home() {
               rightIcon={<ExternalLinkIcon />}
               textDecoration='none !important'
               variant='ghost'
-              href='https://github.com/inference-labs-inc/zkmlBench'
+              href='https://github.com/inference-labs-inc/chainBench'
               target='_blank'
               fontWeight='600'
             >
@@ -77,9 +76,16 @@ export default function Home() {
               <Center>
                 <Stack spacing={4}>
                   <Center as={VStack} spacing={16} pb={16}>
-                    <Image
+                    <ChakraImage
+                      as={Image}
+                      transition='transform 0.5s'
+                      transform='perspective(1000px) rotateY(0deg) rotateX(0deg)'
+                      _hover={{
+                        transform:
+                          'perspective(3000px) rotateY(20deg) rotateX(20deg)',
+                      }}
                       src={bench}
-                      alt='zkml bench'
+                      alt='inference labs bench'
                       width={125}
                       style={{ userSelect: 'none' }}
                       draggable={false}
@@ -92,18 +98,8 @@ export default function Home() {
               </Center>
             </Box>
             <Box maxW='container.xl' margin='0 auto'>
-              <Stack spacing={4}>
+              <Stack spacing={8}>
                 <ResultsTable />
-                <Box>
-                  <Alert status='warning' borderRadius={5}>
-                    <AlertIcon />
-                    <Text fontSize='md' fontWeight='bold'>
-                      We provide important caveats in the info{' '}
-                      <WarningIcon color='orange.400' /> and{' '}
-                      <InfoIcon color='gray.400' /> buttons
-                    </Text>
-                  </Alert>
-                </Box>
               </Stack>
             </Box>
             <Box maxW='container.md' width='100%' margin='0 auto' p={2}>

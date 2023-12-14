@@ -2,3 +2,11 @@
 target/
 .direnv/
 .benchmarks
+*.srs
+*.key
+settings.json
+input.json
+*.onnx
+*.ezkl
+*.msgpack
+witness.json

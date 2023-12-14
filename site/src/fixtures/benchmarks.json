@@ -3,9 +3,11 @@
     "lastUpdated": "2023-12-07T16:31:27.417936"
   },
   "frameworks": {
+    "zkml": {},
+    "0g": {},
     "ezkl": {
-      "Darwin-arm-2.4Ghz-32.0GB": {
-        "prove": {
+      "Darwin-arm-24Ghz-32GB": {
+        "dot-product": {
           "name": "prove",
           "results": [
             {

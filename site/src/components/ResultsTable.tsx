@@ -21,11 +21,9 @@ import {
   Text,
   Th,
   Thead,
-  Tooltip,
   Tr,
   useColorModeValue,
 } from '@chakra-ui/react'
-import Image from 'next/image'
 import NextLink from 'next/link'
 import { useState } from 'react'
 // import { MdInfo } from 'react-icons/md'
@@ -37,16 +35,24 @@ import { FaExternalLinkAlt } from 'react-icons/fa'
 
 const machines = [
   {
-    name: '16x CPU',
-    prop: 'ubuntu-16-shared',
+    name: 'M1 Max',
+    prop: 'Darwin-arm-24Ghz-32GB',
     // Cost per hour
     cost: 1.008,
   },
   {
-    name: '64x CPU',
+    name: 'Ubuntu 16 Cores',
     prop: 'ubuntu-latest-64-cores',
     // Cost per hour
     cost: 4.032,
+    disabled: true,
+  },
+  {
+    name: 'CUDA',
+    prop: 'ubuntu-latest-cuda',
+    // Cost per hour
+    cost: 4.032,
+    disabled: true,
   },
 ]
 
@@ -59,7 +65,7 @@ const metrics = [
   {
     id: 'memory',
     name: 'Memory',
-    prop: 'metrics.memory_usage_bytes',
+    prop: 'metrics.peak_memory_usage_bytes',
   },
   {
     id: 'proof_size',
@@ -99,17 +105,6 @@ const metricFormatter = (val: any, vars: Record<string, any>) => {
   return bytes(val)
 }
 
-const MoreInfo = ({ children, count, more }: any) => (
-  <HStack>
-    <Text>{children}</Text>
-    <Tooltip label={more}>
-      <Text color='blue.700' cursor='pointer'>
-        +{count} more
-      </Text>
-    </Tooltip>
-  </HStack>
-)
-
 const formatAsBoolean = (val?: boolean) => (val ? '✅' : '❌')
 
 const LanguageSupportDescription = ({
@@ -135,12 +130,12 @@ const properties: ResultTableProperty[] = [
     desc: 'The language used to write the framework.',
   },
   {
-    name: 'Supported Languages',
-    desc: 'Languages supported by the framework. These are the languages that can be used to write programs that interact with the framework.',
+    name: 'API Support',
+    desc: 'Languages in which the framework supports an API. These are the languages that can be used to write programs that interact with the framework.',
   },
   {
     name: 'Python',
-    prop: 'supportedLanguages.python',
+    prop: 'apiSupport.python',
     desc: (
       <LanguageSupportDescription
         href='https://www.python.org/'
@@ -149,10 +144,14 @@ const properties: ResultTableProperty[] = [
     ),
     indent: 4,
     value: formatAsBoolean,
+    annotations: {
+      zkml: 'ZKML does not support API bindings, it is accessed via a command line interface.',
+      '0g': '0g does not support API bindings, it is accessed via a command line interface.',
+    },
   },
   {
     name: 'Javascript',
-    prop: 'supportedLanguages.javascript',
+    prop: 'apiSupport.javascript',
     desc: (
       <LanguageSupportDescription
         href='https://developer.mozilla.org/en-US/docs/Web/JavaScript'
@@ -161,10 +160,14 @@ const properties: ResultTableProperty[] = [
     ),
     indent: 4,
     value: formatAsBoolean,
+    annotations: {
+      zkml: 'ZKML does not support API bindings, it is accessed via a command line interface.',
+      '0g': '0g does not support API bindings, it is accessed via a command line interface.',
+    },
   },
   {
     name: 'Rust',
-    prop: 'supportedLanguages.rust',
+    prop: 'apiSupport.rust',
     desc: (
       <LanguageSupportDescription
         href='https://www.rust-lang.org/'
@@ -173,6 +176,15 @@ const properties: ResultTableProperty[] = [
     ),
     indent: 4,
     value: formatAsBoolean,
+    annotations: {
+      zkml: 'ZKML does not support API bindings, it is accessed via a command line interface.',
+      '0g': '0g does not support API bindings, it is accessed via a command line interface.',
+    },
+  },
+  {
+    name: 'Others',
+    prop: 'apiSupport.others',
+    indent: 4,
   },
   {
     name: 'ZK Proving System',
@@ -216,6 +228,9 @@ const properties: ResultTableProperty[] = [
     prop: 'supportedFormats.tensorflow',
     desc: 'TensorFlow is an open source software library for machine learning.',
     value: formatAsBoolean,
+    annotations: {
+      zkml: 'ZKML supports tflite models.',
+    },
   },
   {
     name: 'PyTorch',
@@ -223,6 +238,14 @@ const properties: ResultTableProperty[] = [
     prop: 'supportedFormats.pytorch',
     desc: 'PyTorch is an open source machine learning framework.',
     value: formatAsBoolean,
+  },
+  {
+    name: 'Others',
+    indent: 4,
+    prop: 'supportedFormats.others',
+    annotations: {
+      '0g': '0g supports weightless neural nets (WNNs) in the HDF5 format.',
+    },
   },
   {
     name: 'GPU Acceleration',
@@ -245,12 +268,8 @@ const properties: ResultTableProperty[] = [
   {
     name: 'Dot Product',
     desc: 'A dot product is calculated for a given input size. This is a good test to see how the framework circuitizes and proves a simple operation.',
-    prop: 'metrics.$machine.dot_product.results.0.$metric',
+    prop: 'metrics.$machine.dot-product.results.0.$metric',
     value: metricFormatter,
-    annotations: {
-      risc_zero:
-        'Risc Zero is significantly slower for this test, as the minimum number of cycles for all Risc Zero programs is 64k. Therefore this very small program still requires a large number of cycles.',
-    },
   },
 ]
 
@@ -268,8 +287,36 @@ export function ResultsTable() {
     <Stack fontSize='sm' spacing={4}>
       <HStack>
         <HStack>
-          {machines.map(({ name, prop }) => {
+          {machines.map(({ name, prop, disabled }) => {
             const selected = machine === prop
+            if (disabled) {
+              return (
+                <Popover trigger='hover' placement='top'>
+                  <PopoverTrigger>
+                    <Button size='sm' opacity='0.4' variant='ghost'>
+                      {name}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <PopoverArrow />
+                    <PopoverBody>
+                      <Text overflowWrap='anywhere' fontSize='sm'>
+                        Follow us on &#120143; at{' '}
+                        <Link
+                          as={NextLink}
+                          target='_blank'
+                          color='blue.600'
+                          href='https://twitter.com/intent/user?screen_name=inference_labs'
+                        >
+                          @inference_labs{' '}
+                        </Link>
+                        to be notified when {name} benchmarking is added.
+                      </Text>
+                    </PopoverBody>
+                  </PopoverContent>
+                </Popover>
+              )
+            }
             return (
               <Button
                 size='sm'
@@ -283,30 +330,6 @@ export function ResultsTable() {
               </Button>
             )
           })}
-          <Popover trigger='hover' placement='top'>
-            <PopoverTrigger>
-              <Button size='sm' opacity='0.4' variant='ghost'>
-                CUDA
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent>
-              <PopoverArrow />
-              <PopoverBody>
-                <Text overflowWrap='anywhere' fontSize='sm'>
-                  Follow us on &#120143; at{' '}
-                  <Link
-                    as={NextLink}
-                    target='_blank'
-                    color='blue.600'
-                    href='https://twitter.com/intent/user?screen_name=inference_labs'
-                  >
-                    @inference_labs{' '}
-                  </Link>
-                  to be notified when CUDA benchmarking is added.
-                </Text>
-              </PopoverBody>
-            </PopoverContent>
-          </Popover>
         </HStack>
         <Spacer />
         <HStack>
@@ -352,16 +375,8 @@ export function ResultsTable() {
                     background='bws'
                     zIndex={1000}
                   >
-                    <a href={item.url} target='_blank'>
-                      <Stack spacing={2}>
-                        <Box textDecorationColor='#fff'>
-                          <Image
-                            alt={item.name}
-                            src={item.logo.src[colorMode]}
-                            height={item.logo.height}
-                            width={item.logo.width}
-                          />
-                        </Box>
+                    <Link href={item.url} target='_blank' h='full'>
+                      <Stack spacing={2} justify='end' h='full'>
                         <Box>
                           {item.name}{' '}
                           <Icon
@@ -371,7 +386,7 @@ export function ResultsTable() {
                           />
                         </Box>
                       </Stack>
-                    </a>
+                    </Link>
                   </Th>
                 ))}
               </Tr>

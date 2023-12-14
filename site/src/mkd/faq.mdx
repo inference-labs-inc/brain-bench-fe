@@ -1,61 +1,30 @@
 import { Heading, Alert, AlertIcon, Text } from '@chakra-ui/react'
 import Image from 'next/image'
 
-# Frequently Asked Questions
+# About this site
 
-## What is the purpose of this tool?
+## Purpose
 
 This tool is a benchmarking application created to assist the on-chain AI inference community in understanding the performance and trade-offs of various proving systems. Given the increasing number of systems and the complexity of setting up individual benchmarks, this tool aims to provide a practical comparison. We have strived to maintain similar conditions across all benchmarks to ensure a fair comparison. The goal is to help developers decide which proving system is most suitable for their needs.
 
-## Which proving system is the best?
+## Comparability
 
-There isn't a single "best" proving system. As evident from the table above, each system has its own set of advantages and disadvantages. The choice of system depends on the specific requirements of the application you are developing. In addition to the information provided above, you should also consider the developer experience and the level of abstraction offered by each system.
+Though the industry is still in its infancy, these frameworks all have the same goal - to prove AI inferences on-chain. There are many considerations to look at when choosing between frameworks, and this tool aims to provide the relevant information developers need to choose the right framework for their use case.
 
-## Can these proving systems be compared?
+## Benchmarking methodology
 
-Is it like comparing apples to oranges? It's subjective.
+For these initial stats, we're using our own custom python based benchmarking system. We have laid out the groundwork for rust benchmarks, and plan to migrate to these when they are ready.
 
-These systems operate at different levels of abstraction, but they all aim to achieve the same objective - proving a computation.
+The rust benchmarking system is based on Polylang's zk benchmarking tool called [benchy](https://crates.io/crates/benchy).
 
-Developers should choose the level of abstraction that suits their needs. Each level of abstraction generally reduces performance but increases developer speed, maintainability, and auditability. We compare different levels of abstraction because developers often face this choice when selecting a system.
+## Future Plans
 
-Our aim is to provide a current snapshot of proving systems (not their potential). We want this to be a practical resource for developers who need to decide which proving system to use.
+Community support to add more systems, benchmarks and make improvements to the benchmarking tool is welcome. We plan to improve upon our methods of benchmarking and the site itself to deliver a better experience for developers who need help choosing the best framework for their use case.
 
-We also wanted our benchmarks to be comprehensive. During development, we often found that expected performance doesn't always match actual performance - so we wanted to provide a tool that tests a system from end to end.
+## Additional benchmarks
 
-## Could X be further optimized?
+Since the space is constantly evolving, new benchmarks and new proving systems will need to be added. We are open to suggestions and contributions from the community. If you would like to add a new benchmark or a new proving system, please [submit a PR](https://github.com/inference-labs-inc/chainBench).
 
-Possibly. In this case, it could be one of two things:
+## Kudos
 
-1.  Our benchmark may not be fair - [submit a PR](https://github.com/inference-labs-inc/zkmlBench/pull)
-
-2.  The system hasn't optimized for X yet, but it could theoretically be faster - While this may be true, we're benchmarking existing systems, as that's what a developer has access to when they use a system.
-
-## How are the benchmarks run?
-
-We use a [Github Action](https://github.com/inference-labs-inc/zkmlBench/actions) with a self-hosted runner on a shared AWS instance to run the benchmarks. The benchmarks are updated automatically whenever we update the benchmarks or the versions of the systems we are testing.
-
-## Which benchmark tool is used?
-
-Polylang developed a benchmarking tool perfect for this use-case, which is available on [crates.io](https://crates.io/crates/benchy).
-
-# What is the cost of running the benchmarks?
-
-The cost is significant. We spent $600 in a week on AWS + Github Actions. We plan to add larger machines soon.
-
-## What are the future plans?
-
-We plan to continuously improve these benchmarks. We encourage you to contribute by [submitting a PR](https://github.com/inference-labs-inc/zkmlBench).
-
-We have a few ideas for future improvements -
-
-- Browser benchmarks
-- More common/real world programs
-- Recursive proof benchmarks
-- Loading large amounts of data into proving systems
-
-We want this to be a community-driven project. Let us know what you'd like us to work on, or better yet - submit a PR!
-
-## Can you benchmark X or add system Y?
-
-Absolutely, just [submit a PR](https://github.com/inference-labs-inc/zkmlBench).
+We would like to thank Polylang for creating [zkBench](https://zkBench.dev) and [benchy](https://crates.io/crates/benchy), which have served as great starting points for this site.
