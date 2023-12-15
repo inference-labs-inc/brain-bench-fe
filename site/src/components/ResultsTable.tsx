@@ -65,13 +65,13 @@ const metrics = [
   },
   {
     id: 'memory',
-    name: 'Memory',
+    name: 'Memory (peak)',
     prop: 'metrics.peak_memory_usage_bytes',
   },
   {
-    id: 'proof_size',
-    name: 'Proof Size',
-    prop: 'metrics.proof_size_bytes',
+    id: 'file_size',
+    name: 'File Size',
+    prop: 'metrics.file_size_bytes',
   },
   {
     id: 'cost',

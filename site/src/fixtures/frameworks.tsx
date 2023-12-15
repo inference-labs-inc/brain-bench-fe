@@ -1,3 +1,4 @@
+import get from 'lodash/get'
 import benchmarks from './benchmarks.json'
 
 export const frameworks = [
@@ -26,7 +27,7 @@ export const frameworks = [
     gpu: {
       cuda: true,
     },
-    metrics: benchmarks.frameworks.ezkl,
+    metrics: get(benchmarks, 'frameworks.ezkl', {}),
   },
   {
     id: 'zkml',
@@ -53,7 +54,7 @@ export const frameworks = [
     gpu: {
       cuda: false,
     },
-    metrics: benchmarks.frameworks.zkml,
+    metrics: get(benchmarks, 'frameworks.zkml', {}),
   },
   {
     id: '0g',
@@ -80,6 +81,6 @@ export const frameworks = [
     gpu: {
       cuda: false,
     },
-    metrics: benchmarks.frameworks['0g'],
+    metrics: get(benchmarks, 'frameworks.0g', {}),
   },
 ]
