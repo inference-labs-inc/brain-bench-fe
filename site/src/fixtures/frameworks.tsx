@@ -4,13 +4,13 @@ export const frameworks = [
   {
     id: 'ezkl',
     name: 'EZKL',
-
     url: 'https://ezkl.xyz',
+    version: '7.0.0',
     apiSupport: {
       python: true,
       javascript: true,
       rust: true,
-      others: null,
+      others: 'WASM',
     },
     sourceLanguage: 'Rust',
     zkProvingSystem: 'SNARK',
@@ -31,8 +31,8 @@ export const frameworks = [
   {
     id: 'zkml',
     name: 'ZKML',
-    logo: null,
     url: 'https://github.com/ddkang/zkml',
+    version: 'main@4378958',
     apiSupport: {
       python: false,
       javascript: false,
@@ -58,8 +58,8 @@ export const frameworks = [
   {
     id: '0g',
     name: '0g',
-    logo: null,
     url: 'https://github.com/zkp-gravity/0g-halo2',
+    version: 'main@0ade6d5',
     apiSupport: {
       python: false,
       javascript: false,
@@ -67,7 +67,7 @@ export const frameworks = [
       others: null,
     },
     sourceLanguage: 'Rust',
-    zkProvingSystem: 'BETHOWeN',
+    zkProvingSystem: 'BTHOWeN',
     unboundedModels: true,
     randomnessOperations: true,
     supportedFormats: {

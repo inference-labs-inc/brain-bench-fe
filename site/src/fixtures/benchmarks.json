@@ -1,27 +1,28 @@
 {
   "meta": {
-    "lastUpdated": "2023-12-07T16:31:27.417936"
+    "lastUpdated": "2023-12-14T21:26:34.054291+00:00"
   },
   "frameworks": {
-    "zkml": {},
-    "0g": {},
     "ezkl": {
       "Darwin-arm-24Ghz-32GB": {
-        "dot-product": {
-          "name": "prove",
-          "results": [
-            {
-              "metrics": {
-                "memory_usage_bytes": 101163,
-                "peak_memory_usage_bytes": 115054
-              },
-              "name": "prove",
-              "time": {
-                "secs": 1.0117130279541016
-              }
-            }
-          ]
-        }
+        "gen_settings_settings.json": 632,
+        "calibrate_settings_settings.json": 600,
+        "compile_network.ezkl": 3283994,
+        "get_srs_kzg.srs": 262404,
+        "gen_witness_witness.json": 18450,
+        "mock_prove_memory_usage_bytes": 27115,
+        "mock_prove_peak_memory_usage_bytes": 41817,
+        "setup_pk.key": 8657948,
+        "setup_vk.key": 6920,
+        "setup_settings.json": 600,
+        "prove_proof.json": 57804,
+        "verify_memory_usage_bytes": 19718,
+        "verify_peak_memory_usage_bytes": 34049,
+        "create_evm_verifier_verifier.sol": 74833,
+        "create_evm_verifier_abi.json": 266,
+        "deploy_evm_address.txt": 42,
+        "verify_evm_memory_usage_bytes": 21096,
+        "verify_evm_peak_memory_usage_bytes": 250536
       }
     }
   }

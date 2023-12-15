@@ -2,7 +2,6 @@
 
 import { ColorModeSwitcher } from '@/components/ColorModeSwitcher'
 import { ResultsTable } from '@/components/ResultsTable'
-import x from '@/img/X.png'
 import logo_dark from '@/img/logo/Dark.svg'
 import logo_light from '@/img/logo/Light.svg'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
@@ -17,7 +16,6 @@ import {
   Link,
   Spacer,
   Stack,
-  Text,
   VStack,
   useColorModeValue,
 } from '@chakra-ui/react'
@@ -64,6 +62,7 @@ export default function Home() {
               href='https://github.com/inference-labs-inc/chainBench'
               target='_blank'
               fontWeight='600'
+              display={{ base: 'none', md: 'flex' }}
             >
               Bring Your Own Benchmarks
             </Button>
@@ -90,7 +89,7 @@ export default function Home() {
                       style={{ userSelect: 'none' }}
                       draggable={false}
                     />
-                    <Heading as='h1' fontSize='x-large'>
+                    <Heading as='h1' fontSize='x-large' textAlign='center'>
                       Your benchmark for on-chain inference
                     </Heading>
                   </Center>
@@ -102,45 +101,77 @@ export default function Home() {
                 <ResultsTable />
               </Stack>
             </Box>
-            <Box maxW='container.md' width='100%' margin='0 auto' p={2}>
+            <Box maxW='container.md' margin='0 auto' width='100%' p={2}>
+              <Faq />
+            </Box>
+            <Stack
+              maxW='container.md'
+              width='100%'
+              margin='0 auto'
+              p={2}
+              direction={{ base: 'column', md: 'row' }}
+            >
               <Stack
                 bg='bw.50'
                 borderRadius={10}
-                textAlign='center'
+                textAlign='left'
+                padding={10}
+                spacing={4}
+                mt={10}
+              >
+                <Stack>
+                  <Heading>Visit our site</Heading>
+                  <Heading fontSize='md' color='bw.700'>
+                    Visit the Inference Labs site to learn more about our
+                    mission.
+                  </Heading>
+                </Stack>
+                <Button
+                  as={Link}
+                  href='https://inferencelabs.com'
+                  target='_blank'
+                  size='lg'
+                  background='blackAlpha.900'
+                  color='white'
+                  _hover={{ background: 'blackAlpha.800' }}
+                  _active={{ background: 'blackAlpha.700' }}
+                  colorScheme='white'
+                  rightIcon={<ExternalLinkIcon />}
+                >
+                  Visit Site
+                </Button>
+              </Stack>
+              <Stack
+                bg='bw.50'
+                borderRadius={10}
+                textAlign='left'
                 padding={10}
                 spacing={4}
                 mt={10}
               >
                 <Stack>
                   <Heading>Follow us on &#120143;</Heading>
-                  <Heading fontSize='xl' color='bw.700'>
-                    Follow the Inference Labs team to get updates ch
+                  <Heading fontSize='md' color='bw.700'>
+                    Follow the Inference Labs team to get updates on ch
                     <sub>AI</sub>nBench.
                   </Heading>
                 </Stack>
-                <Center>
-                  <Button
-                    as='a'
-                    href='https://twitter.com/inference_labs'
-                    target='_blank'
-                    size='lg'
-                    background='blackAlpha.900'
-                    color='white'
-                    _hover={{ background: 'blackAlpha.800' }}
-                    _active={{ background: 'blackAlpha.700' }}
-                    colorScheme='white'
-                  >
-                    <HStack>
-                      <Image width={22} src={x} alt='X Logo' />
-                      <Text>@inference_labs</Text>
-                    </HStack>
-                  </Button>
-                </Center>
+                <Button
+                  as={Link}
+                  href='https://twitter.com/inference_labs'
+                  target='_blank'
+                  size='lg'
+                  background='blackAlpha.900'
+                  color='white'
+                  _hover={{ background: 'blackAlpha.800' }}
+                  _active={{ background: 'blackAlpha.700' }}
+                  colorScheme='white'
+                  rightIcon={<ExternalLinkIcon />}
+                >
+                  @inference_labs
+                </Button>
               </Stack>
-            </Box>
-            <Box maxW='container.md' margin='0 auto' width='100%' p={2}>
-              <Faq />
-            </Box>
+            </Stack>
           </Stack>
         </Box>
       </Box>
