@@ -4,6 +4,13 @@
   }
 }
 
-.display {
-  font-family: 'SFRounded', 'SF Pro Rounded', 'ui-rounded', 'sans-serif';
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+::-webkit-scrollbar-track {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 24px;
 }

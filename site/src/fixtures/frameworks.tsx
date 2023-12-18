@@ -3,12 +3,14 @@ import benchmarks from './benchmarks.json'
 import ezklOps from './ezkl/supported_ops.json'
 import onnxOps from './onnx_ops.json'
 import orionOps from './orion/supported_ops.json'
+import tfliteOps from './tflite_ops.json'
+import zkmlOps from './zkml/supported_ops.json'
 
 export enum Support {
   FULL = '✅',
   PARTIAL = '🟡',
   NONE = '❌',
-  UNKNOWN = '❔',
+  UNKNOWN = 'No Data',
 }
 
 export const frameworks = [
@@ -24,16 +26,18 @@ export const frameworks = [
       others: 'WASM',
     },
     operatorSupport: {
-      total: onnxOps,
-      supported: ezklOps,
-      notSupported: onnxOps.filter(
-        (op) =>
-          !ezklOps.map((op) => op.toLowerCase()).includes(op.toLowerCase())
-      ),
+      total: onnxOps.sort(),
+      supported: ezklOps.sort(),
+      notSupported: onnxOps
+        .filter(
+          (op) =>
+            !ezklOps.map((op) => op.toLowerCase()).includes(op.toLowerCase())
+        )
+        .sort(),
     },
     sourceLanguage: 'Rust',
     zkProvingSystem: 'SNARK',
-    unboundedModels: Support.FULL,
+    unboundedModels: Support.NONE,
     randomnessOperations: Support.FULL,
     nativeModelFormat: 'ONNX',
     audit: Support.NONE,
@@ -56,10 +60,20 @@ export const frameworks = [
     },
     sourceLanguage: 'Rust',
     zkProvingSystem: 'SNARK',
-    unboundedModels: Support.UNKNOWN,
-    randomnessOperations: Support.UNKNOWN,
-    nativeModelFormat: 'msgpack (from TFLite)',
+    unboundedModels: Support.NONE,
+    randomnessOperations: Support.NONE,
+    nativeModelFormat: 'msgpack',
     audit: Support.NONE,
+    operatorSupport: {
+      total: tfliteOps.sort(),
+      supported: zkmlOps.sort(),
+      notSupported: tfliteOps
+        .filter(
+          (op) =>
+            !zkmlOps.map((op) => op.toLowerCase()).includes(op.toLowerCase())
+        )
+        .sort(),
+    },
     gpu: {
       cuda: Support.NONE,
       metal: Support.NONE,
@@ -102,12 +116,14 @@ export const frameworks = [
       others: Support.NONE,
     },
     operatorSupport: {
-      total: onnxOps,
-      supported: orionOps,
-      notSupported: onnxOps.filter(
-        (op) =>
-          !orionOps.map((op) => op.toLowerCase()).includes(op.toLowerCase())
-      ),
+      total: onnxOps.sort(),
+      supported: orionOps.sort(),
+      notSupported: onnxOps
+        .filter(
+          (op) =>
+            !orionOps.map((op) => op.toLowerCase()).includes(op.toLowerCase())
+        )
+        .sort(),
     },
     zkProvingSystem: 'STARK',
     unboundedModels: Support.UNKNOWN,

@@ -24,6 +24,7 @@ import {
   Thead,
   Tooltip,
   Tr,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { useState } from 'react'
@@ -96,33 +97,63 @@ const metricFormatter = (val: any, vars: Record<string, any>) => {
   return bytes(val)
 }
 
-const SupportTable = ({ id }: { id: string }) => {
+const SupportTable = ({ id: idName }: { id: string }) => {
   const operatorSupport = frameworks.find(
-    ({ id }) => id === id
+    ({ id }) => id === idName
   )?.operatorSupport
   if (!operatorSupport) return null
+  const redColor = useColorModeValue('red.400', 'red.600')
+  const greenColor = useColorModeValue('green.400', 'green.600')
 
   return (
     <TableContainer overflowX={{ base: 'auto', lg: 'hidden' }}>
       <Table size='sm'>
         <Thead>
           <Tr>
-            <Th color='green.400'>Supported</Th>
-            <Th color='red.400'>Not Supported</Th>
+            <Th border='none' color={greenColor} px={0}>
+              Supported
+            </Th>
+            <Th border='none' color={redColor} px={0}>
+              Not Supported
+            </Th>
           </Tr>
         </Thead>
         <Tbody>
-          {operatorSupport.total.map((_, index: number) => {
+          {(operatorSupport.supported.length >
+          operatorSupport.notSupported.length
+            ? operatorSupport.supported
+            : operatorSupport.notSupported
+          ).map((_, index, arr) => {
             if (
               operatorSupport.supported[index] ||
               operatorSupport.notSupported[index]
             )
               return (
                 <Tr height={4} key={`opsup-${index}`}>
-                  <Td background='rgba(130, 255, 130, 0.4)' fontSize='xs'>
+                  <Td
+                    {...(index === arr.length - 1
+                      ? { roundedBottomLeft: 'lg', borderBottom: 'none' }
+                      : {})}
+                    {...(index === 0 ? { roundedTopLeft: 'md' } : {})}
+                    backgroundColor={`color-mix(in srgb, var(--chakra-colors-${greenColor.replace(
+                      '.',
+                      '-'
+                    )}) 40%, transparent)`}
+                    fontSize='xs'
+                  >
                     {operatorSupport.supported[index]}
                   </Td>
-                  <Td background='rgba(255, 130, 130, 0.4)' fontSize='xs'>
+                  <Td
+                    {...(index === arr.length - 1
+                      ? { roundedBottomRight: 'lg', borderBottom: 'none' }
+                      : {})}
+                    {...(index === 0 ? { roundedTopRight: 'md' } : {})}
+                    backgroundColor={`color-mix(in srgb, var(--chakra-colors-${redColor.replace(
+                      '.',
+                      '-'
+                    )}) 40%, transparent)`}
+                    fontSize='xs'
+                  >
                     {operatorSupport.notSupported[index]}
                   </Td>
                 </Tr>
@@ -243,6 +274,7 @@ const properties: ResultTableProperty[] = [
     //value: formatAsEmojiList,
     info: {
       '0g': '0g supports weightless neural nets (WNNs) in the HDF5 format.',
+      zkml: 'ZKML supports TFLite models in the msgpack format.',
     },
     prop: 'nativeModelFormat',
   },
@@ -258,6 +290,7 @@ const properties: ResultTableProperty[] = [
     },
     info: {
       ezkl: <SupportTable id='ezkl' />,
+      zkml: <SupportTable id='zkml' />,
       orion: <SupportTable id='orion' />,
     },
   },
@@ -270,6 +303,21 @@ const properties: ResultTableProperty[] = [
     indent: 4,
     prop: 'gpu.cuda',
     desc: 'CUDA is a parallel computing platform and programming model developed by Nvidia for general computing on its own GPUs.',
+    info: {
+      ezkl: (
+        <Text fontSize='sm'>
+          EZKL offers CUDA support via{' '}
+          <Link
+            target='_blank'
+            href='https://github.com/ingonyama-zk/icicle#zero-knowledge-on-gpu'
+            textDecor='underline'
+          >
+            Icicle's CUDA backend
+          </Link>
+          .
+        </Text>
+      ),
+    },
   },
   {
     name: 'Metal',
@@ -442,32 +490,30 @@ const ResultsTable = () => {
                       <HStack pl={prop.indent ?? 0} spacing={1}>
                         <Box>{prop.name}</Box>
                         {prop.desc && (
-                          <Box>
-                            <Popover>
-                              <PopoverTrigger>
-                                <IconButton
-                                  opacity={0.3}
-                                  variant='ghost'
-                                  aria-label='info'
-                                  height='18px'
-                                  size='sm'
-                                  icon={<InfoIcon />}
-                                />
-                              </PopoverTrigger>
-                              <Portal>
-                                <PopoverContent
-                                  minW={{ base: '100%', lg: 'max-content' }}
-                                >
-                                  <PopoverArrow />
-                                  <PopoverBody>
-                                    <Text overflowWrap='anywhere' fontSize='sm'>
-                                      {prop.desc}
-                                    </Text>
-                                  </PopoverBody>
-                                </PopoverContent>
-                              </Portal>
-                            </Popover>
-                          </Box>
+                          <Popover>
+                            <PopoverTrigger>
+                              <IconButton
+                                opacity={0.3}
+                                variant='ghost'
+                                aria-label='info'
+                                height='18px'
+                                size='sm'
+                                icon={<InfoIcon />}
+                              />
+                            </PopoverTrigger>
+                            <Portal>
+                              <PopoverContent
+                                minW={{ base: '100%', lg: 'max-content' }}
+                              >
+                                <PopoverArrow />
+                                <PopoverBody>
+                                  <Text overflowWrap='anywhere' fontSize='sm'>
+                                    {prop.desc}
+                                  </Text>
+                                </PopoverBody>
+                              </PopoverContent>
+                            </Portal>
+                          </Popover>
                         )}
                       </HStack>
                     </Td>
@@ -477,11 +523,13 @@ const ResultsTable = () => {
                         : getPathValue(fw, prop.prop, vars)
                       const annotation = prop.annotations?.[fw.id]
                       const info = prop.info?.[fw.id]
+                      const content = info || annotation
+
                       return (
                         <Td key={fw.name} minW={48}>
                           <HStack spacing={1}>
                             <Box>{value}</Box>
-                            {info || annotation ? (
+                            {content ? (
                               <Box>
                                 <Popover>
                                   <PopoverTrigger>
@@ -502,9 +550,9 @@ const ResultsTable = () => {
                                   </PopoverTrigger>
                                   <Portal>
                                     <PopoverContent
-                                      minW={{ base: '100%', lg: 'sm' }}
+                                      minW={{ base: '100%', lg: 'min-content' }}
                                       maxH='sm'
-                                      overflowY='scroll'
+                                      overflow='visible !important'
                                     >
                                       <PopoverArrow />
                                       <PopoverBody
@@ -513,12 +561,16 @@ const ResultsTable = () => {
                                           lg: 'hidden',
                                         }}
                                       >
-                                        <Text
-                                          overflowWrap='anywhere'
-                                          fontSize='sm'
-                                        >
-                                          {info || annotation}
-                                        </Text>
+                                        {typeof content === 'string' ? (
+                                          <Text
+                                            overflowWrap='anywhere'
+                                            fontSize='sm'
+                                          >
+                                            {info || annotation}
+                                          </Text>
+                                        ) : (
+                                          content
+                                        )}
                                       </PopoverBody>
                                     </PopoverContent>
                                   </Portal>
