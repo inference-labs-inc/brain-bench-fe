@@ -8,6 +8,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'chainBench',
+  metadataBase: new URL('https://chainbench.dev'),
   icons: [
     {
       rel: 'icon',
@@ -15,29 +16,32 @@ export const metadata: Metadata = {
     },
     {
       rel: 'apple-touch-icon',
-      url: '/apple-touch-icon.png',
+      url: '/favicon-180-precomposed.png',
       sizes: '180x180',
     },
     {
       rel: 'icon',
-      url: '/favicon-32x32.png',
+      url: '/favicon-32.png',
       sizes: '32x32',
       type: 'image/png',
     },
     {
       rel: 'icon',
-      url: '/favicon-16x16.png',
+      url: '/favicon-16.png',
       sizes: '16x16',
       type: 'image/png',
     },
     {
-      rel: 'manifest',
-      url: '/site.webmanifest',
+      rel: 'icon',
+      type: 'image/png',
+      sizes: '192x192',
+      url: '/favicon-192.png',
     },
     {
-      rel: 'mask-icon',
-      url: '/safari-pinned-tab.svg',
-      color: '#000000',
+      rel: 'icon',
+      type: 'image/png',
+      sizes: '512x512',
+      url: '/favicon-512.png',
     },
   ],
   description: 'Your benchmark for on-chain inference',
@@ -52,8 +56,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: 'https://chainbench.dev/og.png',
-        width: 1200,
-        height: 630,
+        width: 512,
+        height: 512,
         alt: 'chainBench',
       },
     ],
@@ -65,8 +69,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: 'https://chainbench.dev/og.png',
-        width: 1200,
-        height: 630,
+        width: 512,
+        height: 512,
         alt: 'chainBench',
       },
     ],

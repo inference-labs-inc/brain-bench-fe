@@ -33,6 +33,8 @@ import { frameworks } from '@/fixtures/frameworks'
 import { timeSinceLastUpdate } from '@/util/date'
 import bytes from 'bytes'
 import { FaExternalLinkAlt } from 'react-icons/fa'
+import ezklOps from '../fixtures/ezkl/supported_ops.json'
+import allOps from '../fixtures/onnx_ops.json'
 
 const machines = [
   {
@@ -57,26 +59,17 @@ const machines = [
   },
 ]
 
-const metrics = [
+const methods = [
   {
-    id: 'time',
-    name: 'Time',
-    prop: 'time',
+    id: 'python',
+    name: 'Python',
+    prop: 'python',
   },
   {
-    id: 'memory',
-    name: 'Memory (peak)',
-    prop: 'metrics.peak_memory_usage_bytes',
-  },
-  {
-    id: 'file_size',
-    name: 'File Size',
-    prop: 'metrics.file_size_bytes',
-  },
-  {
-    id: 'cost',
-    name: 'Cost',
-    prop: 'time',
+    id: 'rust',
+    name: 'Rust',
+    prop: 'rust',
+    disabled: true,
   },
 ]
 
@@ -103,8 +96,6 @@ const metricFormatter = (val: any, vars: Record<string, any>) => {
   }
   return bytes(val)
 }
-
-const formatAsBoolean = (val?: boolean) => (val ? '✅' : '❌')
 
 const LanguageSupportDescription = ({
   name,
@@ -147,7 +138,6 @@ const properties: ResultTableProperty[] = [
       />
     ),
     indent: 4,
-    value: formatAsBoolean,
     annotations: {
       zkml: 'ZKML does not support API bindings, it is accessed via a command line interface.',
       '0g': '0g does not support API bindings, it is accessed via a command line interface.',
@@ -163,7 +153,7 @@ const properties: ResultTableProperty[] = [
       />
     ),
     indent: 4,
-    value: formatAsBoolean,
+
     annotations: {
       zkml: 'ZKML does not support API bindings, it is accessed via a command line interface.',
       '0g': '0g does not support API bindings, it is accessed via a command line interface.',
@@ -179,7 +169,7 @@ const properties: ResultTableProperty[] = [
       />
     ),
     indent: 4,
-    value: formatAsBoolean,
+
     annotations: {
       zkml: 'ZKML does not support API bindings, it is accessed via a command line interface.',
       '0g': '0g does not support API bindings, it is accessed via a command line interface.',
@@ -199,56 +189,63 @@ const properties: ResultTableProperty[] = [
     name: 'Unbounded Models',
     prop: 'unboundedModels',
     desc: 'Unbounded models allow inputs / outputs of variable size and loops where the number of iterations is not known at compile time. See the FAQ below for more detail on unbounded vs bounded models.',
-    value: formatAsBoolean,
   },
   {
     name: 'Randomness Operations',
     prop: 'randomnessOperations',
     desc: 'Does the framework support randomness operations within models?',
-    value: formatAsBoolean,
   },
   {
     name: 'Audit',
     prop: 'audit',
     desc: 'Whether the framework has been audited by a third party.',
-    value: formatAsBoolean,
   },
   {
-    name: 'Supported Model Formats',
-    desc: 'Which model formats does the framework support? ',
+    name: 'Native Model Format',
+    desc: 'The format that models need to be in to be used by the framework.',
     //value: formatAsEmojiList,
-    annotations: {},
-  },
-  {
-    name: 'ONNX',
-    indent: 4,
-    prop: 'supportedFormats.onnx',
-    desc: 'ONNX is an open format for machine learning models.',
-    value: formatAsBoolean,
-  },
-  {
-    name: 'TensorFlow',
-    indent: 4,
-    prop: 'supportedFormats.tensorflow',
-    desc: 'TensorFlow is an open source software library for machine learning.',
-    value: formatAsBoolean,
-    annotations: {
-      zkml: 'ZKML supports tflite models.',
-    },
-  },
-  {
-    name: 'PyTorch',
-    indent: 4,
-    prop: 'supportedFormats.pytorch',
-    desc: 'PyTorch is an open source machine learning framework.',
-    value: formatAsBoolean,
-  },
-  {
-    name: 'Others',
-    indent: 4,
-    prop: 'supportedFormats.others',
     annotations: {
       '0g': '0g supports weightless neural nets (WNNs) in the HDF5 format.',
+    },
+    prop: 'nativeModelFormat',
+  },
+  {
+    name: 'Supported Operators',
+    desc: 'Operators supported by the framework.',
+    prop: 'operatorSupport',
+    value: (val: any) => {
+      if (!val) return 'No data'
+      val.supported = val.supported || 0
+      val.total = val.total || 0
+      return `${((val.supported.length / val.total.length) * 100).toFixed(0)}%`
+    },
+    annotations: {
+      ezkl: (
+        <TableContainer>
+          <Table size='sm'>
+            <Thead>
+              <Tr>
+                <Th color='green.400'>Supported</Th>
+                <Th color='red.400'>Not Supported</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {allOps.map((op: string, index: number) => {
+                const supportedOp = ezklOps[index] ? ezklOps[index] : null
+                const notSupportedOp = !ezklOps.includes(op) ? op : null
+                return (
+                  <Tr height={4}>
+                    <Td background='rgba(130, 255, 130, 0.4)'>{supportedOp}</Td>
+                    <Td background='rgba(255, 130, 130, 0.4)'>
+                      {notSupportedOp}
+                    </Td>
+                  </Tr>
+                )
+              })}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      ),
     },
   },
   {
@@ -260,14 +257,12 @@ const properties: ResultTableProperty[] = [
     indent: 4,
     prop: 'gpu.cuda',
     desc: 'CUDA is a parallel computing platform and programming model developed by Nvidia for general computing on its own GPUs.',
-    value: formatAsBoolean,
   },
   {
     name: 'Metal',
     indent: 4,
     prop: 'gpu.metal',
     desc: 'Metal is a low-level, low-overhead hardware-accelerated 3D graphic and compute shader application programming interface (API) developed by Apple.',
-    value: formatAsBoolean,
   },
   {
     name: 'Dot Product',
@@ -287,13 +282,39 @@ const properties: ResultTableProperty[] = [
   },
 ]
 
+const DisabledPopoverButton = ({ name }: { name: string }) => (
+  <Popover trigger='hover' placement='top'>
+    <PopoverTrigger>
+      <Button size='sm' opacity='0.4' variant='ghost' cursor='not-allowed'>
+        {name}
+      </Button>
+    </PopoverTrigger>
+    <PopoverContent>
+      <PopoverArrow />
+      <PopoverBody>
+        <Text overflowWrap='anywhere' fontSize='sm'>
+          Follow us on &#120143; at{' '}
+          <Link
+            as={NextLink}
+            target='_blank'
+            color='blue.600'
+            href='https://twitter.com/intent/user?screen_name=inference_labs'
+          >
+            @inference_labs{' '}
+          </Link>
+          to be notified when {name} benchmarking is added.
+        </Text>
+      </PopoverBody>
+    </PopoverContent>
+  </Popover>
+)
+
 const ResultsTable = () => {
   const [machine, setMachine] = useState(machines[0].prop)
-  const [metric, setMetric] = useState(metrics[0].id)
+  const [method, setMethod] = useState(methods[0].id)
   const vars = {
     machine,
-    metric: metrics.find((a) => a.id === metric)?.prop,
-    cost: metric === 'cost',
+    method: methods.find((a) => a.id === method)?.prop,
   }
 
   return (
@@ -310,32 +331,7 @@ const ResultsTable = () => {
           {machines.map(({ name, prop, disabled }) => {
             const selected = machine === prop
             if (disabled) {
-              return (
-                <Popover trigger='hover' placement='top'>
-                  <PopoverTrigger>
-                    <Button size='sm' opacity='0.4' variant='ghost'>
-                      {name}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent>
-                    <PopoverArrow />
-                    <PopoverBody>
-                      <Text overflowWrap='anywhere' fontSize='sm'>
-                        Follow us on &#120143; at{' '}
-                        <Link
-                          as={NextLink}
-                          target='_blank'
-                          color='blue.600'
-                          href='https://twitter.com/intent/user?screen_name=inference_labs'
-                        >
-                          @inference_labs{' '}
-                        </Link>
-                        to be notified when {name} benchmarking is added.
-                      </Text>
-                    </PopoverBody>
-                  </PopoverContent>
-                </Popover>
-              )
+              return <DisabledPopoverButton name={name} />
             }
             return (
               <Button
@@ -353,15 +349,16 @@ const ResultsTable = () => {
         </HStack>
         <Spacer />
         <HStack>
-          {metrics.map(({ name, prop, id }) => {
-            const selected = metric === id
+          {methods.map(({ name, prop, id, disabled }) => {
+            const selected = method === id
+            if (disabled) return <DisabledPopoverButton name={name} />
             return (
               <Button
                 size='sm'
                 variant={selected ? 'solid' : 'ghost'}
                 key={id}
                 onClick={() => {
-                  setMetric(id)
+                  setMethod(id)
                 }}
               >
                 {name}
@@ -389,7 +386,9 @@ const ResultsTable = () => {
                   top={{ base: 0, md: 12 }}
                   background='bws'
                   zIndex={1000}
-                ></Th>
+                >
+                  Property
+                </Th>
                 {frameworks.map((item) => (
                   <Th
                     key={item.name}
@@ -419,7 +418,7 @@ const ResultsTable = () => {
               {properties.map((prop) => {
                 return (
                   <Tr key={prop.name}>
-                    <Td fontWeight='600'>
+                    <Td fontWeight='600' minW='sm'>
                       <HStack pl={prop.indent ?? 0} spacing={1}>
                         <Box>{prop.name}</Box>
                         {prop.desc && (
@@ -456,7 +455,7 @@ const ResultsTable = () => {
                         : getPathValue(fw, prop.prop, vars)
                       const annotation = prop.annotations?.[fw.id]
                       return (
-                        <Td key={fw.name}>
+                        <Td key={fw.name} minW={48}>
                           <HStack spacing={1}>
                             <Box>{value}</Box>
                             {annotation && (
@@ -465,7 +464,8 @@ const ResultsTable = () => {
                                   <PopoverTrigger>
                                     <IconButton
                                       variant='ghost'
-                                      height='18px'
+                                      height='1.5rem'
+                                      width='1.5rem'
                                       aria-label='info'
                                       size='sm'
                                       icon={<WarningIcon color='orange.400' />}
@@ -514,16 +514,27 @@ const ResultsTable = () => {
           </Table>
         </TableContainer>
       </Box>
-      <Box
-        px={2}
-        as={Tooltip}
-        placement='auto-start'
-        label={<time>{benchmarks.meta.lastUpdated}</time>}
-      >
-        <Text fontWeight={600}>
-          Updated {timeSinceLastUpdate(benchmarks.meta.lastUpdated)}
+      <HStack justify='space-between'>
+        <Box
+          px={2}
+          as={Tooltip}
+          placement='auto-start'
+          label={<time>{benchmarks.meta.lastUpdated}</time>}
+        >
+          <Text fontWeight={600}>
+            Updated {timeSinceLastUpdate(benchmarks.meta.lastUpdated)}
+          </Text>
+        </Box>
+        <Text fontWeight={400}>
+          Notice something incorrect?{' '}
+          <Link
+            href='https://github.com/inference-labs-inc/chainBench'
+            fontWeight={600}
+          >
+            Let us know
+          </Link>
         </Text>
-      </Box>
+      </HStack>
     </Stack>
   )
 }
