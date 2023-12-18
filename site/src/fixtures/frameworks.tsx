@@ -26,6 +26,10 @@ export const frameworks = [
     operatorSupport: {
       total: onnxOps,
       supported: ezklOps,
+      notSupported: onnxOps.filter(
+        (op) =>
+          !ezklOps.map((op) => op.toLowerCase()).includes(op.toLowerCase())
+      ),
     },
     sourceLanguage: 'Rust',
     zkProvingSystem: 'SNARK',
@@ -100,6 +104,10 @@ export const frameworks = [
     operatorSupport: {
       total: onnxOps,
       supported: orionOps,
+      notSupported: onnxOps.filter(
+        (op) =>
+          !orionOps.map((op) => op.toLowerCase()).includes(op.toLowerCase())
+      ),
     },
     zkProvingSystem: 'STARK',
     unboundedModels: Support.UNKNOWN,

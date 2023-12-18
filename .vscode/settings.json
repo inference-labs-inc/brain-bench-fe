@@ -1,3 +1,4 @@
 {
-  "rust-analyzer.linkedProjects": ["./mnist_ezkl/Cargo.toml"]
+  "rust-analyzer.linkedProjects": ["./mnist_ezkl/Cargo.toml"],
+  "cSpell.words": ["circuitized", "mnist"]
 }
