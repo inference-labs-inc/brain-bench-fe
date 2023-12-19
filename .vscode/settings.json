@@ -1,4 +1,14 @@
 {
   "rust-analyzer.linkedProjects": ["./mnist_ezkl/Cargo.toml"],
-  "cSpell.words": ["circuitized", "mnist"]
+  "cSpell.words": [
+    "circuitized",
+    "circuitizes",
+    "CUDA",
+    "EZKL",
+    "mnist",
+    "msgpack",
+    "nanos",
+    "WNNs",
+    "ZKML"
+  ]
 }

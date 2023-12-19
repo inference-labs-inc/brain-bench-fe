@@ -102,7 +102,6 @@
   "InstanceNormalization",
   "LSTM",
   "Log",
-  "Loop",
   "MatMul",
   "MatMulInteger",
   "MaxPool",

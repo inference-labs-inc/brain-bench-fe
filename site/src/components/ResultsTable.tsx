@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   HStack,
+  Heading,
   Icon,
   IconButton,
   Link,
@@ -24,6 +25,7 @@ import {
   Thead,
   Tooltip,
   Tr,
+  VStack,
   useColorModeValue,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
@@ -72,7 +74,7 @@ const methods = [
   },
 ]
 
-interface ResultTableProperty {
+export interface ResultTableProperty {
   name: string
   desc?: string | JSX.Element
   prop?: string
@@ -82,7 +84,7 @@ interface ResultTableProperty {
   value?: (val: any, vars: Record<string, any>) => any
 }
 
-const metricFormatter = (val: any, vars: Record<string, any>) => {
+export const metricFormatter = (val: any, vars: Record<string, any>) => {
   if (!val) return 'No data'
   if (vars.cost) {
     const machine = machines.find((m) => m.prop === vars.machine)
@@ -97,7 +99,7 @@ const metricFormatter = (val: any, vars: Record<string, any>) => {
   return bytes(val)
 }
 
-const SupportTable = ({ id: idName }: { id: string }) => {
+export const SupportTable = ({ id: idName }: { id: string }) => {
   const operatorSupport = frameworks.find(
     ({ id }) => id === idName
   )?.operatorSupport
@@ -129,7 +131,7 @@ const SupportTable = ({ id: idName }: { id: string }) => {
               operatorSupport.notSupported[index]
             )
               return (
-                <Tr height={4} key={`opsup-${index}`}>
+                <Tr height={4} key={`operator-support-${index}`}>
                   <Td
                     {...(index === arr.length - 1
                       ? { roundedBottomLeft: 'lg', borderBottom: 'none' }
@@ -165,7 +167,7 @@ const SupportTable = ({ id: idName }: { id: string }) => {
   )
 }
 
-const LanguageSupportDescription = ({
+export const LanguageSupportDescription = ({
   name,
   href,
 }: {
@@ -181,175 +183,6 @@ const LanguageSupportDescription = ({
   </>
 )
 
-const properties: ResultTableProperty[] = [
-  {
-    name: 'Source Language',
-    prop: 'sourceLanguage',
-    desc: 'The language used to write the framework.',
-  },
-  {
-    name: 'Version',
-    prop: 'version',
-    desc: 'The version of the framework used.',
-  },
-  {
-    name: 'API Support',
-    desc: 'Languages in which the framework supports an API. These are the languages that can be used to write programs that interact with the framework.',
-  },
-  {
-    name: 'Python',
-    prop: 'apiSupport.python',
-    desc: (
-      <LanguageSupportDescription
-        href='https://www.python.org/'
-        name='Python'
-      />
-    ),
-    indent: 4,
-    annotations: {
-      zkml: 'ZKML does not support API bindings, it is accessed via a command line interface.',
-      '0g': '0g does not support API bindings, it is accessed via a command line interface.',
-    },
-  },
-  {
-    name: 'Javascript',
-    prop: 'apiSupport.javascript',
-    desc: (
-      <LanguageSupportDescription
-        href='https://developer.mozilla.org/en-US/docs/Web/JavaScript'
-        name='Javascript'
-      />
-    ),
-    indent: 4,
-
-    annotations: {
-      zkml: 'ZKML does not support API bindings, it is accessed via a command line interface.',
-      '0g': '0g does not support API bindings, it is accessed via a command line interface.',
-    },
-  },
-  {
-    name: 'Rust',
-    prop: 'apiSupport.rust',
-    desc: (
-      <LanguageSupportDescription
-        href='https://www.rust-lang.org/'
-        name='Rust'
-      />
-    ),
-    indent: 4,
-
-    annotations: {
-      zkml: 'ZKML does not support API bindings, it is accessed via a command line interface.',
-      '0g': '0g does not support API bindings, it is accessed via a command line interface.',
-    },
-  },
-  {
-    name: 'Others',
-    prop: 'apiSupport.others',
-    indent: 4,
-  },
-  {
-    name: 'ZK Proving System',
-    prop: 'zkProvingSystem',
-    desc: 'Zero Knowledge proof system used by the framework (if applicable).',
-  },
-  {
-    name: 'Unbounded Models',
-    prop: 'unboundedModels',
-    desc: 'Unbounded models allow inputs / outputs of variable size and loops where the number of iterations is not known at compile time. See the FAQ below for more detail on unbounded vs bounded models.',
-  },
-  {
-    name: 'Randomness Operations',
-    prop: 'randomnessOperations',
-    desc: 'Does the framework support randomness operations within models?',
-  },
-  {
-    name: 'Audit',
-    prop: 'audit',
-    desc: 'Whether the framework has been audited by a third party.',
-  },
-  {
-    name: 'Native Model Format',
-    desc: 'The format that models need to be in to be used by the framework.',
-    //value: formatAsEmojiList,
-    info: {
-      '0g': '0g supports weightless neural nets (WNNs) in the HDF5 format.',
-      zkml: 'ZKML supports TFLite models in the msgpack format.',
-    },
-    prop: 'nativeModelFormat',
-  },
-  {
-    name: 'Supported Operators',
-    desc: 'Operators supported by the framework.',
-    prop: 'operatorSupport',
-    value: (val: any) => {
-      if (!val) return 'No data'
-      val.supported = val.supported || 0
-      val.total = val.total || 0
-      return `${((val.supported.length / val.total.length) * 100).toFixed(0)}%`
-    },
-    info: {
-      ezkl: <SupportTable id='ezkl' />,
-      zkml: <SupportTable id='zkml' />,
-      orion: <SupportTable id='orion' />,
-    },
-  },
-  {
-    name: 'GPU Acceleration',
-    desc: 'Which GPU acceleration frameworks does the library support?',
-  },
-  {
-    name: 'CUDA',
-    indent: 4,
-    prop: 'gpu.cuda',
-    desc: 'CUDA is a parallel computing platform and programming model developed by Nvidia for general computing on its own GPUs.',
-    info: {
-      ezkl: (
-        <Text fontSize='sm'>
-          EZKL offers CUDA support via{' '}
-          <Link
-            target='_blank'
-            href='https://github.com/ingonyama-zk/icicle#zero-knowledge-on-gpu'
-            textDecor='underline'
-          >
-            Icicle's CUDA backend
-          </Link>
-          .
-        </Text>
-      ),
-    },
-  },
-  {
-    name: 'Metal',
-    indent: 4,
-    prop: 'gpu.metal',
-    desc: 'Metal is a low-level, low-overhead hardware-accelerated 3D graphic and compute shader application programming interface (API) developed by Apple.',
-  },
-  {
-    name: 'Dot Product',
-    desc: 'A dot product is calculated for a given input size. This is a good test to see how the framework circuitizes and proves a simple operation.',
-    prop: 'metrics.$machine.dot-product.results.0.$metric',
-    value: metricFormatter,
-  },
-  {
-    name: 'MNIST',
-    desc: 'Benchmarks using the MNIST LeNet Model.',
-  },
-  {
-    name: 'Proof Size',
-    indent: 4,
-    desc: 'The size of the proof generated by the framework.',
-    prop: 'metrics.$machine.0.prove_file_sizes.proof_size_bytes',
-    value: metricFormatter,
-  },
-  {
-    name: 'Accuracy',
-    indent: 4,
-    desc: 'The accuracy of the model in relation to the original model. This test determines how well the framework can preserve the model being circuitized.',
-    prop: 'metrics.$machine.0.accuracy_checker.accuracy',
-    value: (val) => (val ? `${val}%` : 'No data'),
-  },
-]
 const DisabledPopoverButton = ({ name }: { name: string }) => (
   <Popover trigger='hover' placement='top'>
     <PopoverTrigger>
@@ -377,7 +210,13 @@ const DisabledPopoverButton = ({ name }: { name: string }) => (
   </Popover>
 )
 
-const ResultsTable = () => {
+const ResultsTable = ({
+  metrics = false,
+  properties,
+}: {
+  metrics?: boolean
+  properties: ResultTableProperty[]
+}) => {
   const [machine, setMachine] = useState(machines[0].prop)
   const [method, setMethod] = useState(methods[0].id)
   const vars = {
@@ -394,6 +233,7 @@ const ResultsTable = () => {
         background='bws'
         zIndex={1001}
         direction={{ base: 'column', md: 'row' }}
+        display={metrics ? 'flex' : 'none'}
       >
         <HStack>
           {machines.map(({ name, prop, disabled }) => {
@@ -451,7 +291,7 @@ const ResultsTable = () => {
               <Tr>
                 <Th
                   position='sticky'
-                  top={{ base: 0, md: 12 }}
+                  top={{ base: 0, md: metrics ? 12 : 0 }}
                   background='bws'
                   zIndex={1000}
                 >
@@ -462,7 +302,7 @@ const ResultsTable = () => {
                     key={item.name}
                     fontSize='sm'
                     position='sticky'
-                    top={{ base: 0, md: 12 }}
+                    top={{ base: 0, md: metrics ? 12 : 0 }}
                     background='bws'
                     zIndex={1000}
                   >
@@ -585,7 +425,10 @@ const ResultsTable = () => {
                 )
               })}
             </Tbody>
-            <Tfoot textAlign='center'>
+            <Tfoot
+              textAlign='center'
+              display={metrics ? 'table-footer-group' : 'none'}
+            >
               <Tr>
                 <Td colSpan={5} w='full'>
                   <Text fontWeight='600' fontSize='md' textAlign='center'>
@@ -604,7 +447,7 @@ const ResultsTable = () => {
           </Table>
         </TableContainer>
       </Box>
-      <HStack justify='space-between'>
+      <HStack justify='space-between' display={metrics ? 'flex' : 'none'}>
         <Box
           px={2}
           as={Tooltip}
@@ -655,4 +498,19 @@ const formatToTwoSignificantDigits = (num: number): string => {
   return roundedNumber.toFixed(Math.max(0, 2 - magnitude))
 }
 
-export { ResultsTable }
+export const ResultsTableContainer = ({
+  name,
+  children,
+}: {
+  name: string
+  children: JSX.Element
+}) => (
+  <Box maxW='container.xl' margin='0 auto'>
+    <VStack spacing={8} align='start'>
+      <Heading>{name}</Heading>
+      {children}
+    </VStack>
+  </Box>
+)
+
+export default ResultsTable

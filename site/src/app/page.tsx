@@ -1,7 +1,8 @@
 'use client'
 
 import { ColorModeSwitcher } from '@/components/ColorModeSwitcher'
-import { ResultsTable } from '@/components/ResultsTable'
+import ResultsTable, { ResultsTableContainer } from '@/components/ResultsTable'
+import { metrics, properties } from '@/fixtures/tables'
 import logo_dark from '@/img/logo/Dark.svg'
 import logo_light from '@/img/logo/Light.svg'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
@@ -96,20 +97,29 @@ export default function Home() {
                 </Stack>
               </Center>
             </Box>
-            <Box maxW='container.xl' margin='0 auto'>
-              <Stack spacing={8}>
-                <ResultsTable />
-              </Stack>
-            </Box>
-            <Box maxW='container.md' margin='0 auto' width='100%' p={2}>
+            <ResultsTableContainer name='Features'>
+              <ResultsTable properties={properties} />
+            </ResultsTableContainer>
+            <ResultsTableContainer name='Benchmarks'>
+              <ResultsTable properties={metrics} metrics />
+            </ResultsTableContainer>
+
+            <Box
+              maxW='container.xl'
+              margin='0 auto'
+              width='100%'
+              px={{ base: 2, lg: 14 }}
+            >
               <Faq />
             </Box>
             <Stack
-              maxW='container.md'
+              maxW='container.xl'
               width='100%'
               margin='0 auto'
               p={2}
+              px={{ base: 2, lg: 14 }}
               direction={{ base: 'column', md: 'row' }}
+              justify='center'
             >
               <Stack
                 bg='bw.50'

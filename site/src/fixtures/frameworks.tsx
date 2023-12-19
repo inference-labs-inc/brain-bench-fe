@@ -38,7 +38,7 @@ export const frameworks = [
     sourceLanguage: 'Rust',
     zkProvingSystem: 'SNARK',
     unboundedModels: Support.NONE,
-    randomnessOperations: Support.FULL,
+    randomnessOperations: Support.NONE,
     nativeModelFormat: 'ONNX',
     audit: Support.NONE,
     gpu: {
@@ -93,8 +93,8 @@ export const frameworks = [
     },
     sourceLanguage: 'Rust',
     zkProvingSystem: 'SNARK',
-    unboundedModels: Support.UNKNOWN,
-    randomnessOperations: Support.UNKNOWN,
+    unboundedModels: Support.NONE,
+    randomnessOperations: Support.NONE,
     nativeModelFormat: 'HDF5',
     audit: Support.NONE,
     gpu: {
@@ -126,8 +126,8 @@ export const frameworks = [
         .sort(),
     },
     zkProvingSystem: 'STARK',
-    unboundedModels: Support.UNKNOWN,
-    randomnessOperations: Support.UNKNOWN,
+    unboundedModels: Support.NONE,
+    randomnessOperations: Support.NONE,
     audit: Support.NONE,
     nativeModelFormat: 'ONNX',
     gpu: {
