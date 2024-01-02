@@ -1,0 +1,2 @@
+[workspace]
+members = ["accum_matmul_overflow", "accum_conv"]

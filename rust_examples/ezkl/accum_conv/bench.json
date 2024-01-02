@@ -1,0 +1,20 @@
+{
+  "name": "bench",
+  "results": [
+    {
+      "name": "runcnvrl",
+      "results": [
+        {
+          "metrics": {
+            "memory_usage_bytes": 4358144
+          },
+          "name": "runcnvrl",
+          "time": {
+            "nanos": 453251208,
+            "secs": 2
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+rror[E0432]: unresolved import `crate::primitives::B160`
+ --> /Users/hudson/.cargo/registry/src/index.crates.io-6f17d22bba15001f/revm-3.3.0/src/db/in_memory_db.rs:3:79
+  |
+3 |     hash_map::Entry, keccak256, Account, AccountInfo, Bytecode, HashMap, Log, B160, B256,
+  |                                                                               ^^^^ no `B160` in the root
+
+error[E0432]: unresolved import `crate::primitives::B160`
+  --> /Users/hudson/.cargo/registry/src/index.crates.io-6f17d22bba15001f/revm-3.3.0/src/evm_impl.rs:11:17
+   |
+11 |     TransactTo, B160, B256, KECCAK_EMPTY, U256,
+   |                 ^^^^ no `B160` in the root
+
+error[E0432]: unresolved import `crate::primitives::B160`
+ --> /Users/hudson/.cargo/registry/src/index.crates.io-6f17d22bba15001f/revm-3.3.0/src/inspector.rs:3:46
+  |
+3 | use crate::primitives::{db::Database, Bytes, B160, B256};
+  |                                              ^^^^ no `B160` in the root
+
+error[E0432]: unresolved import `crate::primitives::B160`
+ --> /Users/hudson/.cargo/registry/src/index.crates.io-6f17d22bba15001f/revm-3.3.0/src/inspector/customprinter.rs:5:37
+  |
+5 | use crate::primitives::{hex, Bytes, B160};
+  |                                     ^^^^ no `B160` in the root
+  |
+  = help: consider importing this unresolved item through its public re-export instead:
+          crate::inspector::B160
+
+error[E0432]: unresolved import `crate::primitives::B160`
+ --> /Users/hudson/.cargo/registry/src/index.crates.io-6f17d22bba15001f/revm-3.3.0/src/inspector/gas.rs:4:46
+  |
+4 | use crate::primitives::{db::Database, Bytes, B160};
+  |                                              ^^^^ no `B160` in the root
+  |
+  = help: consider importing this unresolved item through its public re-export instead:
+          crate::inspector::B160
+
+error[E0432]: unresolved import `crate::primitives::B160`
+ --> /Users/hudson/.cargo/registry/src/index.crates.io-6f17d22bba15001f/revm-3.3.0/src/journaled_state.rs:3:89
+  |
+3 |     db::Database, hash_map::Entry, Account, Bytecode, HashMap, Log, State, StorageSlot, B160,
+  |                                                                                         ^^^^ no `B160` in the root
+
+error[E0050]: method `step` has 3 parameters but the declaration in trait `step` has 2
+   --> /Users/hudson/.cargo/registry/src/index.crates.io-6f17d22bba15001f/revm-3.3.0/src/evm_impl.rs:880:13
+    |
+880 |     fn step(&mut self, interp: &mut Interpreter, is_static: bool) -> InstructionResult {
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected 2 parameters, found 3
+    |
+    = note: `step` from trait: `fn(&mut Self, &mut Interpreter) -> InstructionResult`
+
+error[E0050]: method `step_end` has 4 parameters but the declaration in trait `step_end` has 3
+   --> /Users/hudson/.cargo/registry/src/index.crates.io-6f17d22bba15001f/revm-3.3.0/src/evm_impl.rs:885:9
+    |
+885 | /         &mut self,
+886 | |         interp: &mut Interpreter,
+887 | |         is_static: bool,
+888 | |         ret: InstructionResult,
+    | |______________________________^ expected 3 parameters, found 4
+    |
+    = note: `step_end` from trait: `fn(&mut Self, &mut Interpreter, InstructionResult) -> InstructionResult`
+
+error[E0046]: not all trait items implemented, missing: `tload`, `tstore`
+   --> /Users/hudson/.cargo/registry/src/index.crates.io-6f17d22bba15001f/revm-3.3.0/src/evm_impl.rs:877:1
+    |
+877 | / impl<'a, GSPEC: Spec, DB: Database + 'a, const INSPECT: bool> Host
+878 | |     for EVMImpl<'a, GSPEC, DB, INSPECT>
+    | |_______________________________________^ missing `tload`, `tstore` in implementation
+    |
+    = help: implement the missing item: `fn tload(&mut self, _: Address, _: Uint<256, 4>) -> Uint<256, 4> { todo!() }`
+    = help: implement the missing item: `fn tstore(&mut self, _: Address, _: Uint<256, 4>, _: Uint<256, 4>) { todo!() }`
+
+Some errors have detailed explanations: E0046, E0050, E0432.
+For more information about an error, try `rustc --explain E0046`.
+error: could not compile `revm` (lib) due to 9 previous errors

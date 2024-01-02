@@ -3,9 +3,11 @@ import Head from 'next/head'
 import './globals.css'
 import { Providers } from './providers'
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
+
 export const metadata: Metadata = {
   title: 'chainBench',
-  metadataBase: new URL('https://chainbench.dev'),
+  metadataBase: new URL(BASE_URL),
   icons: [
     {
       rel: 'icon',
@@ -48,13 +50,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://chainbench.dev',
+    url: BASE_URL,
     siteName: 'chainBench',
     images: [
       {
-        url: 'https://chainbench.dev/og.png',
-        width: 512,
-        height: 512,
+        url: `${BASE_URL}/OG.png`,
+        width: 1200,
+        height: 630,
         alt: 'chainBench',
       },
     ],
@@ -65,9 +67,9 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     images: [
       {
-        url: 'https://chainbench.dev/og.png',
-        width: 512,
-        height: 512,
+        url: `${BASE_URL}/OG.png`,
+        width: 1200,
+        height: 630,
         alt: 'chainBench',
       },
     ],

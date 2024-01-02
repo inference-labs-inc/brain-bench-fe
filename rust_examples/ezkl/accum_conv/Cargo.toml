@@ -1,0 +1,15 @@
+[package]
+name = "accum_conv"
+version = "0.1.0"
+
+[dev-dependencies]
+ezkl = {git = "https://github.com/zkonduit/ezkl", branch = "main"}
+criterion = {version = "0.3",  features = ["html_reports"]}
+benchy = "0.1.1"
+halo2_proofs = { git = "https://github.com/zkonduit/halo2", branch= "ac/lookup-modularity"  }
+halo2curves = { version = "0.1.0" }
+rand = { version = "0.8", default_features = false }
+
+[[bench]]
+name = "bench"
+harness = false

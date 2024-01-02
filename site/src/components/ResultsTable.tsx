@@ -295,7 +295,7 @@ const ResultsTable = ({
                   background='bws'
                   zIndex={1000}
                 >
-                  Property
+                  {metrics ? 'Benchmark' : 'Property'}
                 </Th>
                 {frameworks.map((item) => (
                   <Th
