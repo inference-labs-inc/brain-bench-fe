@@ -239,7 +239,7 @@ const ResultsTable = ({
           {machines.map(({ name, prop, disabled }) => {
             const selected = machine === prop
             if (disabled) {
-              return <DisabledPopoverButton name={name} />
+              return <DisabledPopoverButton key={prop} name={name} />
             }
             return (
               <Button
@@ -259,7 +259,7 @@ const ResultsTable = ({
         <HStack>
           {methods.map(({ name, prop, id, disabled }) => {
             const selected = method === id
-            if (disabled) return <DisabledPopoverButton name={name} />
+            if (disabled) return <DisabledPopoverButton key={id} name={name} />
             return (
               <Button
                 size='sm'
