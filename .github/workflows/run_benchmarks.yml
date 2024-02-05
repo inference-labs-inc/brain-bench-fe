@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./bench
+        working-directory: ../bench
     steps:
       - uses: actions/checkout@v4
       - uses: software-mansion/setup-scarb@v1
