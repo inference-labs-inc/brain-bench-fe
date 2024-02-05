@@ -11,16 +11,13 @@ env:
 jobs:
   benchmark-tests:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: bench
     steps:
-      - name: Update
-        run: sudo apt-get update
       - uses: actions/checkout@v4
       - uses: software-mansion/setup-scarb@v1
         with:
           scarb-version: '2.4.2'
+      - name: Update
+        run: apt-get update
       - uses: actions/setup-python@v4
         with:
           python-version: '3.9'
@@ -30,19 +27,24 @@ jobs:
           override: true
           components: rustfmt, clippy
       - uses: baptiste0928/cargo-install@v1
+        working-directory: ${{ github.workspace }}/bench
         with:
           crate: cargo-nextest
           locked: true
       - name: Cargo clean
+        working-directory: ${{ github.workspace }}/bench
         run: cargo clean
       - name: Delete Cargo.lock
+        working-directory: ${{ github.workspace }}/bench
         run: rm -f Cargo.lock
       - name: Install Risc0 toolchain
+        working-directory: ${{ github.workspace }}/bench
         run: |
           cargo install cargo-binstall
           yes | cargo binstall cargo-risczero
           cargo risczero install
       - name: Install Rust jupyter kernel
+        working-directory: ${{ github.workspace }}/bench
         run: |
           cargo install evcxr_jupyter
           evcxr_jupyter --install
@@ -54,16 +56,22 @@ jobs:
         run: |
           curl -L -o ezkl.tar.gz https://github.com/zkonduit/ezkl/releases/download/v7.1.4/build-artifacts.ezkl-linux-gnu.tar.gz
           tar -xzf ezkl.tar.gz
-          sudo mv ezkl /usr/local/bin/  # Move the binary to a directory in your PATH
+          mv ezkl /usr/local/bin/  # Move the binary to a directory in your PATH
       - name: Setup Virtual Env
+        working-directory: ${{ github.workspace }}/bench
         run: python -m venv .env; source .env/bin/activate;
       - name: Run linear regression benchmarks across all frameworks
+        working-directory: ${{ github.workspace }}/bench
         run: source .env/bin/activate; cargo nextest run benchmarking_tests::tests::run_benchmarks_::tests_0 --test-threads 1
       - name: Run randsom forest benchmarks across all frameworks
+        working-directory: ${{ github.workspace }}/bench
         run: source .env/bin/activate; cargo nextest run benchmarking_tests::tests::run_benchmarks_::tests_1 --test-threads 1
       - name: Run svm classification benchmarks across all frameworks
+        working-directory: ${{ github.workspace }}/bench
         run: source .env/bin/activate; cargo nextest run benchmarking_tests::tests::run_benchmarks_::tests_2 --test-threads 1
       - name: Run tree ensemble regression benchmarks across all frameworks
+        working-directory: ${{ github.workspace }}/bench
         run: source .env/bin/activate; cargo nextest run benchmarking_tests::tests::run_benchmarks_::tests_3 --test-threads 1
       - name: Pretty Print benchmarks.json
+        working-directory: ${{ github.workspace }}/bench
         run: jq '.' benchmarks.json # Pretty print the benchmarks.json file
