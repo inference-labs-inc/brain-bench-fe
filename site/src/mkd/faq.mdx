@@ -5,26 +5,16 @@ import Image from 'next/image'
 
 ## Purpose
 
-This tool is a benchmarking application created to assist the on-chain AI inference community in understanding the performance and trade-offs of various proving systems. Given the increasing number of systems and the complexity of setting up individual benchmarks, this tool aims to provide a practical comparison. We have strived to maintain similar conditions across all benchmarks to ensure a fair comparison. The goal is to help developers decide which proving system is most suitable for their needs.
+This site is a benchmarking and comparison tool demonstrating features and performance of several zk-ml proving systems available for use today. The goal is to provide a comprehensive comparison of the various systems available, and to help developers choose the best system for their use case.
 
 ## Comparability
 
-Though the industry is still in its infancy, these frameworks all have the same goal - to prove AI inferences on-chain. There are many considerations to look at when choosing between frameworks, and this tool aims to provide the relevant information developers need to choose the right framework for their use case.
+Though the industry is still in its infancy, these frameworks all have the same goal - to prove AI inferences on-chain. There are many considerations to look at when choosing between frameworks, and this tool aims to provide the relevant information developers need to choose the right framework for their use case. Currently, the benchmark comparisons aren't fully apples to apples due to cairo and risc0 running on VMs, while EZKL and ZKML are running on native hardware.
 
 ## Benchmarking methodology
 
-For these initial stats, we're using our own custom python based benchmarking system. We have laid out the groundwork for rust benchmarks, and plan to migrate to these when they are ready.
+This tool is based on EZKL's zkml-benchmarking suite. We have added a few additional metrics into the benchmarks for the purposes of providing more comparable data to viewers of this site.
 
-The rust benchmarking system is based on Polylang's zk benchmarking tool called [benchy](https://crates.io/crates/benchy).
+## Future plans
 
-## Future Plans
-
-Community support to add more systems, benchmarks and make improvements to the benchmarking tool is welcome. We plan to improve upon our methods of benchmarking and the site itself to deliver a better experience for developers who need help choosing the best framework for their use case.
-
-## Additional benchmarks
-
-Since the space is constantly evolving, new benchmarks and new proving systems will need to be added. We are open to suggestions and contributions from the community. If you would like to add a new benchmark or a new proving system, please [submit a PR](https://github.com/inference-labs-inc/chainBench).
-
-## Kudos
-
-We would like to thank Polylang for creating [zkBench](https://zkBench.dev) and [benchy](https://crates.io/crates/benchy), which have served as great starting points for this site.
+We plan to include more comparable fields in the future and add more frameworks as they're released.

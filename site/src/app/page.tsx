@@ -103,6 +103,7 @@ export default function Home() {
             <ResultsTableContainer name='Benchmarks'>
               <ResultsTable properties={metrics} metrics />
             </ResultsTableContainer>
+            <Box></Box>
 
             <Box
               maxW='container.xl'

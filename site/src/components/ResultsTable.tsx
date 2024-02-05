@@ -1,3 +1,6 @@
+import benchmarks from '@/fixtures/benchmarks.json'
+import { frameworks } from '@/fixtures/frameworks'
+import { timeSinceLastUpdate } from '@/util/date'
 import { InfoIcon, WarningTwoIcon } from '@chakra-ui/icons'
 import {
   Box,
@@ -28,13 +31,10 @@ import {
   VStack,
   useColorModeValue,
 } from '@chakra-ui/react'
+import bytes from 'bytes'
+import { formatDuration, intervalToDuration } from 'date-fns'
 import NextLink from 'next/link'
 import { useState } from 'react'
-// import { MdInfo } from 'react-icons/md'
-import benchmarks from '@/fixtures/benchmarks.json'
-import { frameworks } from '@/fixtures/frameworks'
-import { timeSinceLastUpdate } from '@/util/date'
-import bytes from 'bytes'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 
 const machines = [
@@ -70,7 +70,6 @@ const methods = [
     id: 'rust',
     name: 'Rust',
     prop: 'rust',
-    disabled: true,
   },
 ]
 
@@ -97,6 +96,42 @@ export const metricFormatter = (val: any, vars: Record<string, any>) => {
     return `${(val.secs + val?.nanos / 1e9).toFixed(2)}s`
   }
   return bytes(val)
+}
+
+export const sizeFormatter = (size: any) => {
+  if (!size) return 'No Data'
+  const sizeInKb = parseFloat(size.replace('kb', ''))
+  if (isNaN(sizeInKb)) return 'No Data'
+  const sizeInBytes = sizeInKb * 1024
+  var i =
+    sizeInBytes == 0 ? 0 : Math.floor(Math.log(sizeInBytes) / Math.log(1024))
+  return (
+    (sizeInBytes / Math.pow(1024, i)).toFixed(2) +
+    ' ' +
+    ['B', 'kB', 'MB', 'GB', 'TB'][i]
+  )
+}
+
+export const timeFormatter = (time: string) => {
+  if (!time) return 'No Data'
+  const timeInSeconds = +time.replace('s', '')
+  if (timeInSeconds < 1) return `${(timeInSeconds * 1000).toFixed(2)}ms`
+  const duration = intervalToDuration({ start: 0, end: timeInSeconds * 1000 })
+  return formatDuration(duration)
+}
+
+export const meanAverage = (
+  arr: string[],
+  postfix: string,
+  formattingFunction: (val: string) => string
+) => {
+  if (!arr || !arr.length) return 'No data'
+
+  const floatArray = arr.map((v: string) => parseFloat(v.replace(postfix, '')))
+  const mean =
+    floatArray.reduce((a: number, b: number) => a + b, 0) / floatArray.length
+
+  return formattingFunction(`${mean}${postfix}`)
 }
 
 export const SupportTable = ({ id: idName }: { id: string }) => {
@@ -222,6 +257,7 @@ const ResultsTable = ({
   const vars = {
     machine,
     method: methods.find((a) => a.id === method)?.prop,
+    framework: '',
   }
 
   return (
@@ -256,8 +292,8 @@ const ResultsTable = ({
           })}
         </HStack>
         <Spacer />
-        <HStack>
-          {methods.map(({ name, prop, id, disabled }) => {
+        {/* <HStack>
+          {methods.map(({ name, prop, id, disabled }: any) => {
             const selected = method === id
             if (disabled) return <DisabledPopoverButton key={id} name={name} />
             return (
@@ -273,7 +309,7 @@ const ResultsTable = ({
               </Button>
             )
           })}
-        </HStack>
+        </HStack> */}
       </Stack>
       <Box
         border='1px solid'
@@ -299,7 +335,7 @@ const ResultsTable = ({
                 </Th>
                 {frameworks.map((item) => (
                   <Th
-                    key={item.name}
+                    key={item.name + item.id}
                     fontSize='sm'
                     position='sticky'
                     top={{ base: 0, md: metrics ? 12 : 0 }}
@@ -323,9 +359,9 @@ const ResultsTable = ({
               </Tr>
             </Thead>
             <Tbody>
-              {properties.map((prop) => {
+              {properties.map((prop, index) => {
                 return (
-                  <Tr key={prop.name}>
+                  <Tr key={prop.name + index}>
                     <Td fontWeight='600' minW='sm'>
                       <HStack pl={prop.indent ?? 0} spacing={1}>
                         <Box>{prop.name}</Box>
@@ -359,8 +395,17 @@ const ResultsTable = ({
                     </Td>
                     {frameworks.map((fw: any) => {
                       let value = prop.value
-                        ? prop.value(getPathValue(fw, prop.prop, vars), vars)
-                        : getPathValue(fw, prop.prop, vars)
+                        ? prop.value(
+                            getPathValue(fw, prop.prop, {
+                              ...vars,
+                              framework: fw.id,
+                            }),
+                            { ...vars, framework: fw.id }
+                          )
+                        : getPathValue(fw, prop.prop, {
+                            ...vars,
+                            framework: fw.id,
+                          })
                       const annotation = prop.annotations?.[fw.id]
                       const info = prop.info?.[fw.id]
                       const content = info || annotation
@@ -471,23 +516,22 @@ const ResultsTable = ({
     </Stack>
   )
 }
-
 const getPathValue = (data: any, path?: string, vars?: Record<string, any>) => {
   if (!path) return
   let current = data
+
   path.split('.').forEach((part) => {
     if (!current) return undefined
+    if (part === 'metrics') {
+      current = benchmarks
+      return
+    }
     if (part.startsWith('$')) {
       part = vars?.[part.slice(1)]
-      if (part.split('.').length > 1) {
-        part.split('.').forEach((sub) => {
-          current = current[sub]
-        })
-        return
-      }
     }
-    current = current[part]
+    current = part.split('.').reduce((acc, sub) => acc && acc[sub], current)
   })
+
   return current
 }
 

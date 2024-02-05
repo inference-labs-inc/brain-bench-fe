@@ -1,112 +1,301 @@
 {
   "meta": {
-    "lastUpdated": "2024-01-03T19:32:59.865636+00:00"
+    "lastUpdated": "2024-01-29T14:00:00.000Z"
   },
-  "frameworks": {
+  "linear_regressions": {
     "ezkl": {
-      "python": {
-        "Darwin-arm-24Ghz-32GB": [
-          {
-            "gen_settings_execution_time": 1.010120153427124,
-            "gen_settings_memory_usage_bytes": 40926,
-            "gen_settings_peak_memory_usage_bytes": 51666,
-            "gen_settings_file_sizes": {
-              "settings_size_bytes": 632
-            },
-            "calibrate_settings_execution_time": 4.244875192642212,
-            "calibrate_settings_memory_usage_bytes": 35767,
-            "calibrate_settings_peak_memory_usage_bytes": 129732,
-            "calibrate_settings_file_sizes": {
-              "settings_size_bytes": 599
-            },
-            "compile_execution_time": 1.0105657577514648,
-            "compile_memory_usage_bytes": 19083,
-            "compile_peak_memory_usage_bytes": 24691,
-            "compile_file_sizes": {
-              "network_size_bytes": 3283994
-            },
-            "get_srs_execution_time": 1.0087380409240723,
-            "get_srs_memory_usage_bytes": 18872,
-            "get_srs_peak_memory_usage_bytes": 24529,
-            "get_srs_file_sizes": {
-              "kzg_size_bytes": 262404
-            },
-            "gen_witness_execution_time": 1.0109961032867432,
-            "gen_witness_memory_usage_bytes": 108274,
-            "gen_witness_peak_memory_usage_bytes": 109634,
-            "gen_witness_file_sizes": {
-              "witness_size_bytes": 15671
-            },
-            "mock_prove_execution_time": 1.0148978233337402,
-            "mock_prove_memory_usage_bytes": 27150,
-            "mock_prove_peak_memory_usage_bytes": 41848,
-            "setup_execution_time": 1.0108811855316162,
-            "setup_memory_usage_bytes": 27152,
-            "setup_peak_memory_usage_bytes": 51808,
-            "setup_file_sizes": {
-              "pk_size_bytes": 8657948,
-              "vk_size_bytes": 6920,
-              "settings_size_bytes": 599
-            },
-            "prove_execution_time": 1.0110907554626465,
-            "prove_memory_usage_bytes": 113742,
-            "prove_peak_memory_usage_bytes": 127825,
-            "prove_file_sizes": {
-              "proof_size_bytes": 2624
-            },
-            "verify_execution_time": 1.0089459419250488,
-            "verify_memory_usage_bytes": 21023,
-            "verify_peak_memory_usage_bytes": 35410,
-            "create_evm_verifier_execution_time": 1.0114250183105469,
-            "create_evm_verifier_memory_usage_bytes": 19874,
-            "create_evm_verifier_peak_memory_usage_bytes": 33200,
-            "create_evm_verifier_file_sizes": {
-              "verifier_size_bytes": 74833,
-              "abi_size_bytes": 266
-            },
-            "deploy_evm_execution_time": 1.0075879096984863,
-            "deploy_evm_memory_usage_bytes": 22523,
-            "deploy_evm_peak_memory_usage_bytes": 32318,
-            "deploy_evm_file_sizes": {
-              "address_size_bytes": 42
-            },
-            "verify_evm_execution_time": 1.001810073852539,
-            "verify_evm_memory_usage_bytes": 21076,
-            "verify_evm_peak_memory_usage_bytes": 250481,
-            "accuracy_checker_accuracy": 40.0,
-            "accuracy_checker_avg_gen_witness_time": 1.0721736907958985,
-            "proving_key_size": 8657948,
-            "verification_key_size": 6920,
-            "verifier_size": 74833
-          }
-        ]
-      }
+      "memoryUsage": [
+        "19072kb",
+        "19336kb",
+        "19384kb",
+        "19480kb",
+        "19504kb",
+        "19328kb",
+        "19312kb",
+        "19284kb",
+        "19396kb",
+        "19260kb"
+      ],
+      "proofSize": [4994, 4994, 4994, 4994, 4994, 4994, 4994, 4994, 4994, 4994],
+      "provingTime": [
+        "0.110s",
+        "0.107s",
+        "0.120s",
+        "0.117s",
+        "0.119s",
+        "0.109s",
+        "0.116s",
+        "0.126s",
+        "0.124s",
+        "0.113s"
+      ]
     },
-    "zkml": {
-      "python": {
-        "Darwin-arm-24Ghz-32GB": [
-          {
-            "accuracy_checker_execution_time": 1.0072429180145264,
-            "accuracy_checker_memory_usage_bytes": 25032,
-            "accuracy_checker_peak_memory_usage_bytes": 89421,
-            "accuracy_checker_accuracy": 100.0,
-            "predict_via_zkml_execution_time": 1.007981777191162,
-            "predict_via_zkml_memory_usage_bytes": 24822,
-            "predict_via_zkml_peak_memory_usage_bytes": 89211,
-            "prove_execution_time": 19.084462881088257,
-            "prove_memory_usage_bytes": 26908,
-            "prove_peak_memory_usage_bytes": 89062,
-            "prove_file_sizes": {
-              "pkey_size_bytes": 503399812,
-              "vkey_size_bytes": 83080,
-              "proof_size_bytes": 5024,
-              "public_vals_size_bytes": 320,
-              "out_size_bytes": 29,
-              "params_kzg/17_size_bytes": 16777476
-            }
-          }
-        ]
-      }
+    "orion": {
+      "memoryUsage": [
+        "58920kb",
+        "58792kb",
+        "58792kb",
+        "58540kb",
+        "58600kb",
+        "58668kb",
+        "58772kb",
+        "58744kb",
+        "58596kb",
+        "58664kb"
+      ],
+      "provingTime": [
+        "0.564s",
+        "0.574s",
+        "0.557s",
+        "0.588s",
+        "0.555s",
+        "0.552s",
+        "0.575s",
+        "0.560s",
+        "0.589s",
+        "0.568s"
+      ]
+    },
+    "riscZero": {
+      "memoryUsage": [
+        "1320848kb",
+        "1320760kb",
+        "1321476kb",
+        "1320952kb",
+        "1320956kb",
+        "1321992kb",
+        "1321364kb",
+        "1322356kb",
+        "1320564kb",
+        "1321100kb"
+      ],
+      "provingTime": [
+        "10.135307373s",
+        "9.898868642s",
+        "9.965547556s",
+        "9.991938652s",
+        "10.018107321s",
+        "10.157783776s",
+        "10.051746136s",
+        "9.980013628s",
+        "9.993921306s",
+        "10.031427326s"
+      ]
+    }
+  },
+  "random_forests": {
+    "ezkl": {
+      "memoryUsage": [
+        "385120kb",
+        "381636kb",
+        "383360kb",
+        "383284kb",
+        "381736kb",
+        "381692kb",
+        "386036kb",
+        "381772kb",
+        "384804kb",
+        "380908kb"
+      ],
+      "provingTime": [
+        "5.833s",
+        "5.778s",
+        "5.517s",
+        "5.878s",
+        "5.780s",
+        "5.718s",
+        "5.792s",
+        "5.637s",
+        "5.587s",
+        "5.908s"
+      ]
+    },
+    "riscZero": {
+      "memoryUsage": [
+        "10189184kb",
+        "10189168kb",
+        "10189276kb",
+        "10188948kb",
+        "10189580kb",
+        "10189464kb",
+        "10189204kb",
+        "10189344kb",
+        "10189348kb",
+        "10189568kb"
+      ],
+      "provingTime": [
+        "172.553903364s",
+        "172.799974685s",
+        "173.297326674s",
+        "172.981827885s",
+        "175.70236339s",
+        "172.200223477s",
+        "172.796352423s",
+        "173.565469223s",
+        "178.051368735s",
+        "173.591744683s"
+      ]
+    }
+  },
+  "svm_classifications": {
+    "ezkl": {
+      "memoryUsage": [
+        "23696kb",
+        "23504kb",
+        "23528kb",
+        "23672kb",
+        "23652kb",
+        "23792kb",
+        "23716kb",
+        "23736kb",
+        "23808kb",
+        "23628kb"
+      ],
+      "proofSize": [7170, 7170, 7170, 7170, 7170, 7170, 7170, 7170, 7170, 7170],
+      "provingTime": [
+        "0.294s",
+        "0.302s",
+        "0.276s",
+        "0.295s",
+        "0.290s",
+        "0.290s",
+        "0.300s",
+        "0.292s",
+        "0.304s",
+        "0.292s"
+      ]
+    },
+    "orion": {
+      "memoryUsage": [
+        "58776kb",
+        "58848kb",
+        "58588kb",
+        "58536kb",
+        "58860kb",
+        "58792kb",
+        "58832kb",
+        "58868kb",
+        "58760kb",
+        "58776kb"
+      ],
+      "provingTime": [
+        "0.618s",
+        "0.675s",
+        "0.650s",
+        "0.632s",
+        "0.647s",
+        "0.631s",
+        "0.631s",
+        "0.657s",
+        "0.643s",
+        "0.657s"
+      ]
+    },
+    "riscZero": {
+      "memoryUsage": [
+        "5106064kb",
+        "5106768kb",
+        "5108536kb",
+        "5106996kb",
+        "5106636kb",
+        "5105552kb",
+        "5106460kb",
+        "5107696kb",
+        "5106664kb",
+        "5106716kb"
+      ],
+      "provingTime": [
+        "37.246979953s",
+        "37.115559714s",
+        "37.0353987s",
+        "37.007006189s",
+        "37.198958621s",
+        "37.05161069s",
+        "37.168039435s",
+        "36.955520002s",
+        "37.084956823s",
+        "36.87424205s"
+      ]
+    }
+  },
+  "te_regressions": {
+    "ezkl": {
+      "memoryUsage": [
+        "23696kb",
+        "23596kb",
+        "23500kb",
+        "23684kb",
+        "23712kb",
+        "23648kb",
+        "23504kb",
+        "23740kb",
+        "23748kb",
+        "23780kb"
+      ],
+      "provingTime": [
+        "0.302s",
+        "0.299s",
+        "0.316s",
+        "0.293s",
+        "0.335s",
+        "0.313s",
+        "0.294s",
+        "0.304s",
+        "0.334s",
+        "0.268s"
+      ]
+    },
+    "orion": {
+      "memoryUsage": [
+        "67644kb",
+        "67620kb",
+        "67632kb",
+        "67620kb",
+        "67560kb",
+        "67560kb",
+        "67472kb",
+        "67576kb",
+        "67628kb",
+        "67576kb"
+      ],
+      "provingTime": [
+        "0.931s",
+        "0.953s",
+        "0.937s",
+        "0.942s",
+        "0.946s",
+        "0.935s",
+        "0.993s",
+        "0.942s",
+        "0.954s",
+        "0.933s"
+      ]
+    },
+    "riscZero": {
+      "memoryUsage": [
+        "1322000kb",
+        "1321168kb",
+        "1321700kb",
+        "1320360kb",
+        "1319924kb",
+        "1320136kb",
+        "1320372kb",
+        "1321324kb",
+        "1321232kb",
+        "1320368kb"
+      ],
+      "provingTime": [
+        "10.043029723s",
+        "9.973850341s",
+        "9.974722632s",
+        "10.183226482s",
+        "9.995898963s",
+        "10.124585553s",
+        "9.998553622s",
+        "10.00953051s",
+        "10.023232044s",
+        "10.043587876s"
+      ]
     }
   }
 }

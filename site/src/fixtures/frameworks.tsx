@@ -1,5 +1,3 @@
-import get from 'lodash/get'
-import benchmarks from './benchmarks.json'
 import ezklOps from './ezkl/supported_ops.json'
 import onnxOps from './onnx_ops.json'
 import orionOps from './orion/supported_ops.json'
@@ -45,7 +43,6 @@ export const frameworks = [
       cuda: Support.FULL,
       metal: Support.NONE,
     },
-    metrics: get(benchmarks, 'frameworks.ezkl', {}),
   },
   {
     id: 'zkml',
@@ -78,36 +75,39 @@ export const frameworks = [
       cuda: Support.NONE,
       metal: Support.NONE,
     },
-    metrics: get(benchmarks, 'frameworks.zkml', {}),
   },
   {
-    id: '0g',
-    name: '0g',
-    url: 'https://github.com/zkp-gravity/0g-halo2',
-    version: 'main@0ade6d5',
+    id: 'riscZero',
+    name: 'risc0',
+    url: 'https://github.com/risc0/risc0',
+    version: 'v0.19.1',
     apiSupport: {
       python: Support.NONE,
       javascript: Support.NONE,
-      rust: Support.NONE,
-      others: Support.NONE,
+      rust: Support.FULL,
+      others: Support.PARTIAL,
+    },
+    operatorSupport: {
+      total: [0],
+      supported: [0],
+      notSupported: [],
     },
     sourceLanguage: 'Rust',
-    zkProvingSystem: 'SNARK',
-    unboundedModels: Support.NONE,
-    randomnessOperations: Support.NONE,
-    nativeModelFormat: 'HDF5',
+    zkProvingSystem: 'STARK',
+    unboundedModels: Support.FULL,
+    randomnessOperations: Support.FULL,
+    nativeModelFormat: 'Rust, C++',
     audit: Support.NONE,
     gpu: {
-      cuda: Support.NONE,
-      metal: Support.NONE,
+      cuda: Support.FULL,
+      metal: Support.FULL,
     },
-    metrics: get(benchmarks, 'frameworks.0g', {}),
   },
   {
     id: 'orion',
     name: 'Orion',
     url: 'https://github.com/gizatechxyz/orion',
-    version: 'v0.1.9',
+    version: 'v0.2.2',
     sourceLanguage: 'Cairo',
     apiSupport: {
       python: Support.NONE,
@@ -134,6 +134,5 @@ export const frameworks = [
       cuda: Support.NONE,
       metal: Support.NONE,
     },
-    metrics: get(benchmarks, 'frameworks.orion', {}),
   },
 ]
