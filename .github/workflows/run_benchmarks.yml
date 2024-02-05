@@ -1,0 +1,69 @@
+name: Run benchmarks
+on:
+  push:
+    branches: ['main']
+    paths-ignore:
+      - 'README.md'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  benchmark-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: bench
+    steps:
+      - name: Update
+        run: sudo apt-get update
+      - uses: actions/checkout@v4
+      - uses: software-mansion/setup-scarb@v1
+        with:
+          scarb-version: '2.4.2'
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly-2024-01-16
+          override: true
+          components: rustfmt, clippy
+      - uses: baptiste0928/cargo-install@v1
+        with:
+          crate: cargo-nextest
+          locked: true
+      - name: Cargo clean
+        run: cargo clean
+      - name: Delete Cargo.lock
+        run: rm -f Cargo.lock
+      - name: Install Risc0 toolchain
+        run: |
+          cargo install cargo-binstall
+          yes | cargo binstall cargo-risczero
+          cargo risczero install
+      - name: Install Rust jupyter kernel
+        run: |
+          cargo install evcxr_jupyter
+          evcxr_jupyter --install
+      - name: Install GNU Time
+        run: sudo apt-get update && sudo apt-get install -y time
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+      - name: Download and Install EZKL Binary
+        run: |
+          curl -L -o ezkl.tar.gz https://github.com/zkonduit/ezkl/releases/download/v7.1.4/build-artifacts.ezkl-linux-gnu.tar.gz
+          tar -xzf ezkl.tar.gz
+          sudo mv ezkl /usr/local/bin/  # Move the binary to a directory in your PATH
+      - name: Setup Virtual Env
+        run: python -m venv .env; source .env/bin/activate;
+      - name: Run linear regression benchmarks across all frameworks
+        run: source .env/bin/activate; cargo nextest run benchmarking_tests::tests::run_benchmarks_::tests_0 --test-threads 1
+      - name: Run randsom forest benchmarks across all frameworks
+        run: source .env/bin/activate; cargo nextest run benchmarking_tests::tests::run_benchmarks_::tests_1 --test-threads 1
+      - name: Run svm classification benchmarks across all frameworks
+        run: source .env/bin/activate; cargo nextest run benchmarking_tests::tests::run_benchmarks_::tests_2 --test-threads 1
+      - name: Run tree ensemble regression benchmarks across all frameworks
+        run: source .env/bin/activate; cargo nextest run benchmarking_tests::tests::run_benchmarks_::tests_3 --test-threads 1
+      - name: Pretty Print benchmarks.json
+        run: jq '.' benchmarks.json # Pretty print the benchmarks.json file
