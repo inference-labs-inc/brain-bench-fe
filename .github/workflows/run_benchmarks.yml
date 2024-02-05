@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ${{ github.workspace }}/bench
+        working-directory: ./bench
     steps:
       - uses: actions/checkout@v4
       - uses: software-mansion/setup-scarb@v1
@@ -28,18 +28,14 @@ jobs:
           override: true
           components: rustfmt, clippy
       - uses: baptiste0928/cargo-install@v1
-
         with:
           crate: cargo-nextest
           locked: true
       - name: Cargo clean
-
         run: cargo clean
       - name: Delete Cargo.lock
-
         run: rm -f Cargo.lock
       - name: Install Risc0 toolchain
-
         run: |
           cargo install cargo-binstall
           yes | cargo binstall cargo-risczero
@@ -60,17 +56,12 @@ jobs:
       - name: Setup Virtual Env
         run: python -m venv .env; source .env/bin/activate;
       - name: Run linear regression benchmarks across all frameworks
-
         run: source .env/bin/activate; cargo nextest run benchmarking_tests::tests::run_benchmarks_::tests_0 --test-threads 1
-      - name: Run randsom forest benchmarks across all frameworks
-
+      - name: Run random forest benchmarks across all frameworks
         run: source .env/bin/activate; cargo nextest run benchmarking_tests::tests::run_benchmarks_::tests_1 --test-threads 1
       - name: Run svm classification benchmarks across all frameworks
-
         run: source .env/bin/activate; cargo nextest run benchmarking_tests::tests::run_benchmarks_::tests_2 --test-threads 1
       - name: Run tree ensemble regression benchmarks across all frameworks
-
         run: source .env/bin/activate; cargo nextest run benchmarking_tests::tests::run_benchmarks_::tests_3 --test-threads 1
       - name: Pretty Print benchmarks.json
-
         run: jq '.' benchmarks.json # Pretty print the benchmarks.json file
