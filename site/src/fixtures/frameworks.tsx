@@ -46,7 +46,7 @@ export const frameworks = [
   },
   {
     id: 'zkml',
-    name: 'ZKML',
+    name: `Daniel Kang's zkML`,
     url: 'https://github.com/ddkang/zkml',
     version: 'main@4378958',
     apiSupport: {
