@@ -1,17 +1,33 @@
-# ChainBench
+# Ch<sub>AI</sub>nBench (frontend)
 
-On-chain verified proven AI inference system benchmarks
+NextJS frontend for the Ch<sub>AI</sub>nBench project. See deployed site at [chainbench.vercel.app](https://chainbench.vercel.app).
 
-## Why?
+## Local Development
 
-We created ChainBench to help support and grow the blockchain and AI community. The space is growing incredibly fast (which is great 🔥), but that makes it harder for builders to understand the tooling and trade-offs of different systems.
+### Pull Repository
 
-Our goal is not to discover or evaluate "the best on-chain verified proven AI inference system", there probably isn't one. Instead, we want to give you the data, so you can find the best system for your use case.
+```zsh
+git clone https://github.com/inference-labs-inc/chainBench.git
+```
 
-## Benchmarks are not fair
+### Navigate to the `site` directory
 
-Benchmarks are really hard. We've done our best to provide accurate and fair benchmarks, and we'll happily accept contributions if you think this can be improved. We also strive to caveat and explain the results as best we can, so developers/builders/researchers have a full understanding of trade-offs.
+```zsh
+cd chainBench/site
+```
 
-## Install
+### Install Dependencies
 
-### Instructions will be provided soon
+```zsh
+pnpm install
+```
+
+### Start Development Server
+
+```zsh
+pnpm dev
+```
+
+## Deployment
+
+Deployments are handled via Vercel. Pushing to the `main` branch will trigger a new deployment.
