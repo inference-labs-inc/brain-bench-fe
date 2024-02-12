@@ -9,20 +9,23 @@ import {
 } from 'recharts'
 import benchmarks from '../fixtures/benchmarks.json'
 interface ComparisonBarChartProps {
-  modelName: string
+  modelName: keyof (typeof benchmarks)[keyof typeof benchmarks]
   propertyName: string
+  machine: keyof typeof benchmarks
 }
 
 const ComparisonBarChart: React.FC<ComparisonBarChartProps> = ({
   modelName,
   propertyName,
+  machine,
 }) => {
   const data: any = []
-  const frameworks = Object.keys(benchmarks['64CPU-128GB-None'][modelName])
+  const frameworks = Object.keys(benchmarks[machine][modelName])
 
   frameworks.forEach((framework) => {
-    const propertyValues =
-      benchmarks['64CPU-128GB-None'][modelName][framework][propertyName]
+    const propertyValues = benchmarks[machine][modelName][framework][
+      propertyName
+    ] as string[]
     if (propertyValues === undefined) return
     const averagePropertyValue =
       propertyValues.reduce(
