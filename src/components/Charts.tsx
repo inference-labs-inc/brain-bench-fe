@@ -1,3 +1,4 @@
+import { get } from 'lodash'
 import {
   Bar,
   BarChart,
@@ -20,14 +21,14 @@ const ComparisonBarChart: React.FC<ComparisonBarChartProps> = ({
   machine,
 }) => {
   const data: any = []
-  const frameworks = Object.keys(
-    ((benchmarks as any)[machine] as any)[modelName] as object
-  )
+  const frameworks = Object.keys(get(benchmarks, `${machine}.${modelName}`, {}))
 
   frameworks.forEach((framework) => {
-    const propertyValues = (benchmarks as any)[machine][modelName][framework][
-      propertyName
-    ] as string[]
+    const propertyValues = get(
+      benchmarks,
+      `${machine}.${modelName}.${framework}.${propertyName}`,
+      [] as string[]
+    )
     if (propertyValues === undefined) return
     const averagePropertyValue =
       propertyValues.reduce(

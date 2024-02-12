@@ -1,6 +1,5 @@
 'use client'
 
-import ComparisonBarChart from '@/components/Charts'
 import { ColorModeSwitcher } from '@/components/ColorModeSwitcher'
 import ResultsTable, { ResultsTableContainer } from '@/components/ResultsTable'
 import { metrics, properties } from '@/fixtures/tables'
@@ -104,48 +103,6 @@ export default function Home() {
             <ResultsTableContainer name='Benchmarks'>
               <ResultsTable properties={metrics} metrics />
             </ResultsTableContainer>
-            <Center as={VStack}>
-              <HStack>
-                <VStack>
-                  <Heading as='h2' fontSize='xl'>
-                    Memory Usage for Linear Regressions
-                  </Heading>
-                  <ComparisonBarChart
-                    modelName='linear_regressions'
-                    propertyName='memoryUsage'
-                  />
-                </VStack>
-                <VStack>
-                  <Heading as='h2' fontSize='xl'>
-                    Proving Time for Linear Regressions
-                  </Heading>
-                  <ComparisonBarChart
-                    modelName='linear_regressions'
-                    propertyName='provingTime'
-                  />
-                </VStack>
-              </HStack>
-              <HStack>
-                <VStack>
-                  <Heading as='h2' fontSize='xl'>
-                    Memory Usage for Random Forests
-                  </Heading>
-                  <ComparisonBarChart
-                    modelName='random_forests'
-                    propertyName='memoryUsage'
-                  />
-                </VStack>
-                <VStack>
-                  <Heading as='h2' fontSize='xl'>
-                    Proving Time for Random Forests
-                  </Heading>
-                  <ComparisonBarChart
-                    modelName='random_forests'
-                    propertyName='provingTime'
-                  />
-                </VStack>
-              </HStack>
-            </Center>
 
             <Box
               maxW='container.xl'

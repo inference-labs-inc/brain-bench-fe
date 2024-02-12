@@ -17,6 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Portal,
+  SimpleGrid,
   Spacer,
   Stack,
   Table,
@@ -37,6 +38,7 @@ import { formatDuration, intervalToDuration } from 'date-fns'
 import NextLink from 'next/link'
 import { useState } from 'react'
 import { FaExternalLinkAlt } from 'react-icons/fa'
+import ComparisonBarChart from './Charts'
 
 const methods = [
   {
@@ -538,6 +540,36 @@ const ResultsTable = ({
           </Link>
         </Text>
       </HStack>
+      {metrics && (
+        <SimpleGrid columns={2} spacing={10}>
+          {Object.keys(
+            benchmarks[Object.keys(benchmarks)[0] as keyof typeof benchmarks]
+          ).map((model) =>
+            Object.keys(
+              (
+                benchmarks[
+                  Object.keys(benchmarks)[0] as keyof typeof benchmarks
+                ] as any
+              )[model]
+            ).map((property, index) => (
+              <VStack key={`${model}-${property}`}>
+                <Heading as='h2' fontSize='xl'>
+                  {property} for{' '}
+                  {model
+                    .split('_')
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(' ')}
+                </Heading>
+                <ComparisonBarChart
+                  modelName={model}
+                  propertyName={index === 0 ? 'memoryUsage' : 'provingTime'}
+                  machine={machine as keyof typeof benchmarks}
+                />
+              </VStack>
+            ))
+          )}
+        </SimpleGrid>
+      )}
     </Stack>
   )
 }
