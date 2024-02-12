@@ -1,5 +1,6 @@
 import benchmarks from '@/fixtures/benchmarks.json'
 import { frameworks } from '@/fixtures/frameworks'
+import { getRunnerDetails } from '@/util/bench_json'
 import { timeSinceLastUpdate } from '@/util/date'
 import { InfoIcon, WarningTwoIcon } from '@chakra-ui/icons'
 import {
@@ -37,29 +38,6 @@ import NextLink from 'next/link'
 import { useState } from 'react'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 
-const machines = [
-  {
-    name: 'M1 Max',
-    prop: 'Darwin-arm-24Ghz-32GB',
-    // Cost per hour, per https://instances.vantage.sh/aws/ec2/mac2.metal
-    cost: 0.65,
-  },
-  {
-    name: 'Ubuntu 16 Cores',
-    prop: 'ubuntu-latest-16-cores',
-    // Cost per hour, per https://instances.vantage.sh/?min_vcpus=16&selected=c6g.metal
-    cost: 2.176,
-    disabled: true,
-  },
-  {
-    name: 'CUDA',
-    prop: 'ubuntu-latest-cuda',
-    // Cost per hour, per https://instances.vantage.sh/?min_vcpus=16&selected=g4dn.8xlarge
-    cost: 4.032,
-    disabled: true,
-  },
-]
-
 const methods = [
   {
     id: 'python',
@@ -73,6 +51,8 @@ const methods = [
   },
 ]
 
+const machines = Object.keys(benchmarks).filter((a) => a !== 'meta')
+
 export interface ResultTableProperty {
   name: string
   desc?: string | JSX.Element
@@ -85,13 +65,7 @@ export interface ResultTableProperty {
 
 export const metricFormatter = (val: any, vars: Record<string, any>) => {
   if (!val) return 'No data'
-  if (vars.cost) {
-    const machine = machines.find((m) => m.prop === vars.machine)
-    if (!machine) return null
-    const costPerSecond = machine.cost / 3600
-    const totalCost = (val.secs + val?.nanos / 1e9) * costPerSecond
-    return `$${formatToTwoSignificantDigits(totalCost)}`
-  }
+
   if (vars.metric == 'time') {
     return `${(val.secs + val?.nanos / 1e9).toFixed(2)}s`
   }
@@ -115,6 +89,7 @@ export const sizeFormatter = (size: any) => {
 export const timeFormatter = (time: string) => {
   if (!time) return 'No Data'
   const timeInSeconds = +time.replace('s', '')
+  if (isNaN(timeInSeconds)) return 'No Data'
   if (timeInSeconds < 1) return `${(timeInSeconds * 1000).toFixed(2)}ms`
   const duration = intervalToDuration({ start: 0, end: timeInSeconds * 1000 })
   return formatDuration(duration)
@@ -252,7 +227,7 @@ const ResultsTable = ({
   metrics?: boolean
   properties: ResultTableProperty[]
 }) => {
-  const [machine, setMachine] = useState(machines[0].prop)
+  const [machine, setMachine] = useState(machines[0])
   const [method, setMethod] = useState(methods[0].id)
   const vars = {
     machine,
@@ -260,6 +235,7 @@ const ResultsTable = ({
     framework: '',
   }
 
+  const disabledColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200')
   return (
     <Stack fontSize='sm' spacing={4}>
       <Stack
@@ -272,21 +248,29 @@ const ResultsTable = ({
         display={metrics ? 'flex' : 'none'}
       >
         <HStack>
-          {machines.map(({ name, prop, disabled }) => {
-            const selected = machine === prop
-            if (disabled) {
-              return <DisabledPopoverButton key={prop} name={name} />
-            }
+          {machines.map((name) => {
+            const specs = getRunnerDetails(name)
+            const selected = machine === name
+            // if (disabled) {
+            //   return <DisabledPopoverButton key={prop} name={name} />
+            // }
             return (
               <Button
                 size='sm'
                 variant={selected ? 'solid' : 'ghost'}
-                key={prop}
+                key={name}
                 onClick={() => {
-                  setMachine(prop)
+                  setMachine(name)
                 }}
               >
-                {name}
+                {[
+                  specs.cpu,
+                  'Cores,',
+                  specs.ram,
+                  ...(specs.accelerator && specs.accelerator !== 'None'
+                    ? ['GB RAM,', specs.accelerator, 'Accelerator']
+                    : ['GB RAM']),
+                ].join(' ')}
               </Button>
             )
           })}
@@ -341,25 +325,62 @@ const ResultsTable = ({
                     top={{ base: 0, md: metrics ? 12 : 0 }}
                     background='bws'
                     zIndex={1000}
+                    bgColor={item.disabled ? disabledColor : 'none'}
+                    backdropFilter={item.disabled ? 'blur(5px)' : 'none'}
                   >
-                    <Link href={item.url} target='_blank' h='full'>
-                      <Stack spacing={2} justify='end' h='full'>
-                        <Box>
-                          {item.name}{' '}
-                          <Icon
-                            opacity='0.4'
-                            fontSize='xs'
-                            as={FaExternalLinkAlt}
-                          />
-                        </Box>
-                      </Stack>
-                    </Link>
+                    <Tooltip
+                      label={
+                        item.disabled
+                          ? "This framework is not yet released and couldn't be benchmarked as a result."
+                          : null
+                      }
+                    >
+                      <Link href={item.url} target='_blank' h='full'>
+                        <Stack spacing={2} justify='end' h='full'>
+                          <HStack>
+                            <Text>{item.name}</Text>
+                            {item.disabled ? (
+                              <WarningTwoIcon color='red.400' />
+                            ) : (
+                              <Icon
+                                opacity='0.4'
+                                fontSize='xs'
+                                as={FaExternalLinkAlt}
+                              />
+                            )}
+                          </HStack>
+                        </Stack>
+                      </Link>
+                    </Tooltip>
                   </Th>
                 ))}
               </Tr>
             </Thead>
             <Tbody>
               {properties.map((prop, index) => {
+                let propPath = prop.prop || ''
+                if (metrics) {
+                  let pathParts = propPath.split('.')
+                  if (
+                    !pathParts.some((part) =>
+                      machines.some((name) => part.includes(name))
+                    )
+                  ) {
+                    pathParts.unshift(machine)
+                  } else {
+                    pathParts[
+                      pathParts.findIndex((part) =>
+                        machines.some((name) => part.includes(name))
+                      )
+                    ] = machine
+                  }
+
+                  if (!pathParts.includes('metrics'))
+                    pathParts.unshift('metrics')
+                  propPath = pathParts.join('.')
+                }
+                prop.prop = propPath
+
                 return (
                   <Tr key={prop.name + index}>
                     <Td fontWeight='600' minW='sm'>
@@ -409,11 +430,15 @@ const ResultsTable = ({
                       const annotation = prop.annotations?.[fw.id]
                       const info = prop.info?.[fw.id]
                       const content = info || annotation
-
                       return (
-                        <Td key={fw.name} minW={48}>
+                        <Td
+                          key={fw.name}
+                          minW={48}
+                          bg={fw.disabled ? disabledColor : 'none'}
+                          opacity={fw.disabled ? 0.4 : 1}
+                        >
                           <HStack spacing={1}>
-                            <Box>{value}</Box>
+                            <Box>{fw.disabled ? 'Unknown' : value}</Box>
                             {content ? (
                               <Box>
                                 <Popover>
@@ -475,7 +500,7 @@ const ResultsTable = ({
               display={metrics ? 'table-footer-group' : 'none'}
             >
               <Tr>
-                <Td colSpan={5} w='full'>
+                <Td colSpan={6} w='full'>
                   <Text fontWeight='600' fontSize='md' textAlign='center'>
                     More benchmarks to be added.{' '}
                     <Link

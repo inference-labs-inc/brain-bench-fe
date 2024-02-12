@@ -135,4 +135,10 @@ export const frameworks = [
       metal: Support.NONE,
     },
   },
+  {
+    id: 'tensorplonk',
+    name: `TensorPlonk`,
+    url: '',
+    disabled: true,
+  },
 ]

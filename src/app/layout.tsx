@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
+import { Providers } from './Providers'
 import './globals.css'
-import { Providers } from './providers'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
