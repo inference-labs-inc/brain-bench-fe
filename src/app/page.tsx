@@ -6,6 +6,7 @@ import { metrics, properties } from '@/fixtures/tables'
 import logo_dark from '@/img/logo/Dark.svg'
 import logo_light from '@/img/logo/Light.svg'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
+
 import {
   Box,
   Button,
