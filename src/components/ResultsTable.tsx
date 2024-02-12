@@ -562,7 +562,9 @@ const ResultsTable = ({
                 </Heading>
                 <ComparisonBarChart
                   modelName={model}
-                  propertyName={['memoryUsage', 'provingSize', 'provingTime']}
+                  propertyName={
+                    ['memoryUsage', 'provingSize', 'provingTime'][index]
+                  }
                   machine={machine as keyof typeof benchmarks}
                 />
               </VStack>
