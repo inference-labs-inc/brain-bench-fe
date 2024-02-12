@@ -1,3 +1,331 @@
 {
-"meta": {"lastUpdated": "2024-02-11T23:46:43+0000"}
+"64CPU-128GB-None": {
+  "linear_regressions": {
+    "ezkl": {
+      "memoryUsage": [
+        "109kb",
+        "109kb",
+        "109kb",
+        "109kb",
+        "109kb",
+        "109kb",
+        "109kb",
+        "109kb",
+        "109kb",
+        "109kb"
+      ],
+      "proofSize": [],
+      "provingTime": [
+        "s",
+        "s",
+        "s",
+        "s",
+        "s",
+        "s",
+        "s",
+        "s",
+        "s",
+        "s"
+      ]
+    },
+    "orion": {
+      "memoryUsage": [
+        "56280kb",
+        "57504kb",
+        "57040kb",
+        "55204kb",
+        "56212kb",
+        "58576kb",
+        "57840kb",
+        "55856kb",
+        "54372kb",
+        "54592kb"
+      ],
+      "proofSize": [],
+      "provingTime": [
+        "0.714s",
+        "0.694s",
+        "0.739s",
+        "0.753s",
+        "0.822s",
+        "0.722s",
+        "0.756s",
+        "0.776s",
+        "0.844s",
+        "0.679s"
+      ]
+    },
+    "riscZero": {
+      "memoryUsage": [
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb"
+      ],
+      "proofSize": [],
+      "provingTime": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "zkml": {
+      "memoryUsage": [],
+      "proofSize": [],
+      "provingTime": []
+    }
+  },
+  "random_forests": {
+    "ezkl": {
+      "memoryUsage": [
+        "1kb",
+        "1kb",
+        "1kb",
+        "1kb",
+        "1kb",
+        "1kb",
+        "1kb",
+        "1kb",
+        "1kb",
+        "1kb"
+      ],
+      "proofSize": [],
+      "provingTime": [
+        "s",
+        "s",
+        "s",
+        "s",
+        "s",
+        "s",
+        "s",
+        "s",
+        "s",
+        "s"
+      ]
+    },
+    "riscZero": {
+      "memoryUsage": [
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb"
+      ],
+      "proofSize": [],
+      "provingTime": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "zkml": {
+      "memoryUsage": [],
+      "proofSize": [],
+      "provingTime": []
+    }
+  },
+  "svm_classifications": {
+    "ezkl": {
+      "memoryUsage": [
+        "109kb",
+        "109kb",
+        "109kb",
+        "109kb",
+        "109kb",
+        "109kb",
+        "109kb",
+        "109kb",
+        "109kb",
+        "109kb"
+      ],
+      "proofSize": [],
+      "provingTime": [
+        "s",
+        "s",
+        "s",
+        "s",
+        "s",
+        "s",
+        "s",
+        "s",
+        "s",
+        "s"
+      ]
+    },
+    "orion": {
+      "memoryUsage": [
+        "56264kb",
+        "55292kb",
+        "59020kb",
+        "57832kb",
+        "57900kb",
+        "54880kb",
+        "56292kb",
+        "58060kb",
+        "56172kb",
+        "57176kb"
+      ],
+      "proofSize": [],
+      "provingTime": [
+        "0.810s",
+        "0.924s",
+        "0.863s",
+        "0.784s",
+        "0.755s",
+        "0.795s",
+        "0.798s",
+        "0.797s",
+        "0.797s",
+        "0.945s"
+      ]
+    },
+    "riscZero": {
+      "memoryUsage": [
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb"
+      ],
+      "proofSize": [],
+      "provingTime": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "zkml": {
+      "memoryUsage": [],
+      "proofSize": [],
+      "provingTime": []
+    }
+  },
+  "te_regressions": {
+    "ezkl": {
+      "memoryUsage": [
+        "1kb",
+        "1kb",
+        "1kb",
+        "1kb",
+        "1kb",
+        "1kb",
+        "1kb",
+        "1kb",
+        "1kb",
+        "1kb"
+      ],
+      "proofSize": [],
+      "provingTime": [
+        "s",
+        "s",
+        "s",
+        "s",
+        "s",
+        "s",
+        "s",
+        "s",
+        "s",
+        "s"
+      ]
+    },
+    "orion": {
+      "memoryUsage": [
+        "65536kb",
+        "65536kb",
+        "65536kb",
+        "65536kb",
+        "65536kb",
+        "65536kb",
+        "65536kb",
+        "65536kb",
+        "65536kb",
+        "65536kb"
+      ],
+      "proofSize": [],
+      "provingTime": [
+        "1.183s",
+        "1.164s",
+        "1.029s",
+        "1.021s",
+        "1.171s",
+        "1.126s",
+        "1.083s",
+        "1.134s",
+        "1.079s",
+        "1.093s"
+      ]
+    },
+    "riscZero": {
+      "memoryUsage": [
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb",
+        "18432kb"
+      ],
+      "proofSize": [],
+      "provingTime": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "zkml": {
+      "memoryUsage": [],
+      "proofSize": [],
+      "provingTime": []
+    }
+  }
+}
+,
+"meta": {"lastUpdated": "2024-02-12T03:31:27+0000"}
 }
