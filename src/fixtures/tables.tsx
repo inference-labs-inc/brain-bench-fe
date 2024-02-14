@@ -1,6 +1,5 @@
 import {
   LanguageSupportDescription,
-  ResultTableProperty,
   SupportTable,
   meanAverage,
   sizeFormatter,
@@ -10,7 +9,7 @@ import { Link, Text } from '@chakra-ui/react'
 import { upperFirst } from 'lodash'
 import benchmarks from './benchmarks.json'
 
-export const properties: ResultTableProperty[] = [
+export const properties: any[] = [
   {
     name: 'Source Language',
     prop: `sourceLanguage`,
@@ -170,7 +169,7 @@ export const properties: ResultTableProperty[] = [
   },
 ]
 
-export const metrics: ResultTableProperty[] = Object.entries(benchmarks)
+export const metrics: any[] = Object.entries(benchmarks)
   .filter(([name]) => name !== 'meta' && !!name)
   .map((item) => Object.entries(item[1]))
   .flat()

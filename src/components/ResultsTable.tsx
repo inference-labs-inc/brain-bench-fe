@@ -249,7 +249,7 @@ const ResultsTable = ({
   properties,
 }: {
   metrics?: boolean
-  properties: ResultTableProperty[]
+  properties: any[]
 }) => {
   const [machine, setMachine] = useState(machines[0])
   const [method, setMethod] = useState(methods[0].id)
@@ -395,14 +395,14 @@ const ResultsTable = ({
                 if (metrics) {
                   let pathParts = propPath.split('.')
                   if (
-                    !pathParts.some((part) =>
+                    !pathParts.some((part: string[]) =>
                       machines.some((name) => part.includes(name))
                     )
                   ) {
                     pathParts.unshift(machine)
                   } else {
                     pathParts[
-                      pathParts.findIndex((part) =>
+                      pathParts.findIndex((part: string[]) =>
                         machines.some((name) => part.includes(name))
                       )
                     ] = machine
