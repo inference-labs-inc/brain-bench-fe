@@ -35,10 +35,11 @@ import {
 } from '@chakra-ui/react'
 import bytes from 'bytes'
 import { formatDuration, intervalToDuration } from 'date-fns'
+import { upperFirst } from 'lodash'
 import NextLink from 'next/link'
 import { useState } from 'react'
 import { FaExternalLinkAlt } from 'react-icons/fa'
-import ComparisonBarChart from './Charts'
+import ComparisonBarChart, { labelForMetric } from './Charts'
 
 const methods = [
   {
@@ -54,16 +55,6 @@ const methods = [
 ]
 
 const machines = Object.keys(benchmarks).filter((a) => a !== 'meta')
-
-export interface ResultTableProperty {
-  name: string
-  desc?: string | JSX.Element
-  prop?: string
-  indent?: number
-  annotations?: Record<string, string | JSX.Element>
-  info?: Record<string, string | JSX.Element>
-  value?: (val: any, vars: Record<string, any>) => any
-}
 
 export const metricFormatter = (val: any, vars: Record<string, any>) => {
   if (!val) return 'No data'
@@ -110,6 +101,37 @@ export const meanAverage = (
 
   return formattingFunction(`${mean}${postfix}`)
 }
+
+const getChartData = (machine: string) =>
+  Object.entries(benchmarks[machine as keyof typeof benchmarks])
+    .map(([model, valuesByFramework]) => {
+      return Object.entries(valuesByFramework)
+        .map(([framework, values]) => {
+          return Object.entries(values as object).map(([metric, value]) => {
+            const postfix = ['proofSize', 'memoryUsage'].includes(metric)
+              ? 'kb'
+              : 's'
+
+            if (Array.isArray(value)) {
+              const len = value.length
+              value = value.reduce((a, b) => {
+                if (typeof a === 'string') a = +a.replace(postfix, '')
+                if (typeof b === 'string') b = +b.replace(postfix, '')
+                return a + b
+              }, 0)
+              return {
+                framework,
+                metric,
+                model,
+                postfix,
+                value: !value ? null : value / len,
+              }
+            }
+          })
+        })
+        .flat()
+    })
+    .flat()
 
 export const SupportTable = ({ id: idName }: { id: string }) => {
   const operatorSupport = frameworks.find(
@@ -253,9 +275,6 @@ const ResultsTable = ({
           {machines.map((name) => {
             const specs = getRunnerDetails(name)
             const selected = machine === name
-            // if (disabled) {
-            //   return <DisabledPopoverButton key={prop} name={name} />
-            // }
             return (
               <Button
                 size='sm'
@@ -327,13 +346,24 @@ const ResultsTable = ({
                     top={{ base: 0, md: metrics ? 12 : 0 }}
                     background='bws'
                     zIndex={1000}
-                    bgColor={item.disabled ? disabledColor : 'none'}
-                    backdropFilter={item.disabled ? 'blur(5px)' : 'none'}
+                    bgColor={
+                      item.disabled && (!item.disabledForMetricsOnly || metrics)
+                        ? disabledColor
+                        : 'none'
+                    }
+                    backdropFilter={
+                      item.disabled && (!item.disabledForMetricsOnly || metrics)
+                        ? 'blur(5px)'
+                        : 'none'
+                    }
                   >
                     <Tooltip
                       label={
-                        item.disabled
-                          ? "This framework is not yet released and couldn't be benchmarked as a result."
+                        item.disabled &&
+                        (!item.disabledForMetricsOnly || metrics)
+                          ? item.label
+                            ? item.label
+                            : "This framework is not yet released and couldn't be benchmarked as a result."
                           : null
                       }
                     >
@@ -341,7 +371,8 @@ const ResultsTable = ({
                         <Stack spacing={2} justify='end' h='full'>
                           <HStack>
                             <Text>{item.name}</Text>
-                            {item.disabled ? (
+                            {item.disabled &&
+                            (!item.disabledForMetricsOnly || metrics) ? (
                               <WarningTwoIcon color='red.400' />
                             ) : (
                               <Icon
@@ -436,11 +467,25 @@ const ResultsTable = ({
                         <Td
                           key={fw.name}
                           minW={48}
-                          bg={fw.disabled ? disabledColor : 'none'}
-                          opacity={fw.disabled ? 0.4 : 1}
+                          bg={
+                            fw.disabled &&
+                            (!fw.disabledForMetricsOnly || metrics)
+                              ? disabledColor
+                              : 'none'
+                          }
+                          opacity={
+                            fw.disabled &&
+                            (!fw.disabledForMetricsOnly || metrics)
+                              ? 0.4
+                              : 1
+                          }
                         >
                           <HStack spacing={1}>
-                            <Box>{fw.disabled ? 'Unknown' : value}</Box>
+                            <Box>
+                              {fw.disabled && !value && !prop.noProp
+                                ? 'Unknown'
+                                : value}
+                            </Box>
                             {content ? (
                               <Box>
                                 <Popover>
@@ -540,38 +585,40 @@ const ResultsTable = ({
           </Link>
         </Text>
       </HStack>
-      {metrics && (
-        <SimpleGrid columns={2} spacing={10}>
-          {Object.keys(
-            benchmarks[Object.keys(benchmarks)[0] as keyof typeof benchmarks]
-          ).map((model) =>
-            Object.keys(
-              (
-                benchmarks[
-                  Object.keys(benchmarks)[0] as keyof typeof benchmarks
-                ] as any
-              )[model]
-            ).map((property, index) => (
-              <VStack key={`${model}-${property}`}>
-                <Heading as='h2' fontSize='xl'>
-                  {property} for{' '}
-                  {model
-                    .split('_')
-                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(' ')}
-                </Heading>
-                <ComparisonBarChart
-                  modelName={model}
-                  propertyName={
-                    ['memoryUsage', 'provingSize', 'provingTime'][index]
-                  }
-                  machine={machine as keyof typeof benchmarks}
-                />
-              </VStack>
-            ))
+      <Heading mb={8}>Charts</Heading>
+      {metrics ? (
+        <SimpleGrid
+          columns={{ base: 1, md: 2 }}
+          spacing={10}
+          justifyContent='center'
+        >
+          {Object.keys(benchmarks[machine as keyof typeof benchmarks]).map(
+            (model) => {
+              return (
+                <Box key={model} mb={6}>
+                  <Heading size='md' mb={8}>
+                    {upperFirst(model.split('_').join(' '))}
+                  </Heading>
+                  {['memoryUsage', 'proofSize', 'provingTime'].map((metric) => {
+                    const data = getChartData(machine).filter(
+                      (d) => d?.model === model && d?.metric === metric
+                    )
+
+                    return (
+                      <Box key={metric} mb={4}>
+                        <Heading size='sm' mb={2} fontWeight='bold'>
+                          {labelForMetric.get(metric)}
+                        </Heading>
+                        <ComparisonBarChart propertyName='value' data={data} />
+                      </Box>
+                    )
+                  })}
+                </Box>
+              )
+            }
           )}
         </SimpleGrid>
-      )}
+      ) : null}
     </Stack>
   )
 }
@@ -592,13 +639,6 @@ const getPathValue = (data: any, path?: string, vars?: Record<string, any>) => {
   })
 
   return current
-}
-
-const formatToTwoSignificantDigits = (num: number): string => {
-  const magnitude = Math.floor(Math.log10(Math.abs(num)) || 1)
-  const roundedNumber =
-    Math.round(num / Math.pow(10, magnitude - 1)) * Math.pow(10, magnitude - 1)
-  return roundedNumber.toFixed(Math.max(0, 2 - magnitude))
 }
 
 export const ResultsTableContainer = ({

@@ -45,38 +45,6 @@ export const frameworks = [
     },
   },
   {
-    id: 'zkml',
-    name: `Daniel Kang's zkML`,
-    url: 'https://github.com/ddkang/zkml',
-    version: 'main@4378958',
-    apiSupport: {
-      python: Support.NONE,
-      javascript: Support.NONE,
-      rust: Support.NONE,
-      others: Support.NONE,
-    },
-    sourceLanguage: 'Rust',
-    zkProvingSystem: 'SNARK',
-    unboundedModels: Support.NONE,
-    randomnessOperations: Support.NONE,
-    nativeModelFormat: 'msgpack',
-    audit: Support.NONE,
-    operatorSupport: {
-      total: tfliteOps.sort(),
-      supported: zkmlOps.sort(),
-      notSupported: tfliteOps
-        .filter(
-          (op) =>
-            !zkmlOps.map((op) => op.toLowerCase()).includes(op.toLowerCase())
-        )
-        .sort(),
-    },
-    gpu: {
-      cuda: Support.NONE,
-      metal: Support.NONE,
-    },
-  },
-  {
     id: 'riscZero',
     name: 'risc0',
     url: 'https://github.com/risc0/risc0',
@@ -130,6 +98,42 @@ export const frameworks = [
     randomnessOperations: Support.NONE,
     audit: Support.NONE,
     nativeModelFormat: 'ONNX',
+    gpu: {
+      cuda: Support.NONE,
+      metal: Support.NONE,
+    },
+  },
+  {
+    id: 'zkml',
+    disabled: true,
+    disabledForMetricsOnly: true,
+    name: `Daniel Kang's zkML`,
+    url: 'https://github.com/ddkang/zkml',
+    label:
+      "This framework couldn't complete any of the benchmarks listed due to a lack of support for the required operations or uncaught errors.",
+    version: 'main@4378958',
+    apiSupport: {
+      python: Support.NONE,
+      javascript: Support.NONE,
+      rust: Support.NONE,
+      others: Support.NONE,
+    },
+    sourceLanguage: 'Rust',
+    zkProvingSystem: 'SNARK',
+    unboundedModels: Support.NONE,
+    randomnessOperations: Support.NONE,
+    nativeModelFormat: 'msgpack',
+    audit: Support.NONE,
+    operatorSupport: {
+      total: tfliteOps.sort(),
+      supported: zkmlOps.sort(),
+      notSupported: tfliteOps
+        .filter(
+          (op) =>
+            !zkmlOps.map((op) => op.toLowerCase()).includes(op.toLowerCase())
+        )
+        .sort(),
+    },
     gpu: {
       cuda: Support.NONE,
       metal: Support.NONE,

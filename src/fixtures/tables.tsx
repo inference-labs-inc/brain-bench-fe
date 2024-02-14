@@ -24,6 +24,7 @@ export const properties: ResultTableProperty[] = [
   {
     name: 'API Support',
     desc: `Languages in which the framework supports an API. These are the languages that can be used to write programs that interact with the framework.`,
+    noProp: true,
   },
   {
     name: 'Python',
@@ -127,6 +128,7 @@ export const properties: ResultTableProperty[] = [
   {
     name: 'GPU Acceleration',
     desc: `Which GPU acceleration frameworks does the library support?`,
+    noProp: true,
   },
   {
     name: 'CUDA',
@@ -172,10 +174,11 @@ export const metrics: ResultTableProperty[] = Object.entries(benchmarks)
   .filter(([name]) => name !== 'meta' && !!name)
   .map((item) => Object.entries(item[1]))
   .flat()
-  .map(([name, benchmark]) => {
+  .map(([name]) => {
     return [
       {
         name: upperFirst(name.split('_').join(' ')),
+        noProp: true,
         desc: `Benchmarks using the ${upperFirst(name).replace(
           '_',
           ' '

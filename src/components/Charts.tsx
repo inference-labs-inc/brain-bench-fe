@@ -1,4 +1,4 @@
-import { get } from 'lodash'
+import { useEffect, useState } from 'react'
 import {
   Bar,
   BarChart,
@@ -8,45 +8,39 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import benchmarks from '../fixtures/benchmarks.json'
 interface ComparisonBarChartProps {
-  modelName: string
   propertyName: string
-  machine: keyof typeof benchmarks
+  data: any[]
 }
 
-const ComparisonBarChart: React.FC<ComparisonBarChartProps> = ({
-  modelName,
-  propertyName,
-  machine,
-}) => {
-  const data: any = []
-  const frameworks = Object.keys(get(benchmarks, `${machine}.${modelName}`, {}))
+export const labelForMetric = new Map([
+  ['proofSize', 'Proof Size in KB'],
+  ['memoryUsage', 'Memory Usage in KB'],
+  ['provingTime', 'Proving Time in Seconds'],
+])
 
-  frameworks.forEach((framework) => {
-    const propertyValues = get(
-      benchmarks,
-      `${machine}.${modelName}.${framework}.${propertyName}`,
-      [] as string[]
+const ComparisonBarChart: React.FC<ComparisonBarChartProps> = ({
+  propertyName,
+  data,
+}) => {
+  const [barData, setBarData] = useState(data)
+
+  useEffect(() => {
+    setBarData(
+      data.map((d) => {
+        return {
+          name: d.framework,
+          value: d.value,
+        }
+      })
     )
-    if (propertyValues === undefined) return
-    const averagePropertyValue =
-      propertyValues.reduce(
-        (acc, value) =>
-          acc + parseInt(value.replace('kb', '').replace('s', '')),
-        0
-      ) / propertyValues.length
-    data.push({
-      name: framework,
-      [propertyName]: averagePropertyValue,
-    })
-  })
+  }, [data])
 
   return (
     <BarChart
       width={500}
       height={300}
-      data={data}
+      data={barData}
       margin={{
         top: 5,
         right: 30,
@@ -59,7 +53,11 @@ const ComparisonBarChart: React.FC<ComparisonBarChartProps> = ({
       <YAxis />
       <Tooltip />
       <Legend />
-      <Bar dataKey={propertyName} fill='#8884d8' />
+      <Bar
+        name={labelForMetric.get(data[0].metric)}
+        dataKey='value'
+        fill='#8884d8'
+      />
     </BarChart>
   )
 }
