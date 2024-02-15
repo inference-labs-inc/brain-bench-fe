@@ -1,19 +1,19 @@
-# Ch<sub>AI</sub>nBench (frontend)
+# Br<sub>AI</sub>nBench (frontend)
 
-NextJS frontend for the Ch<sub>AI</sub>nBench project. See deployed site at [chainbench.vercel.app](https://chainbench.vercel.app).
+NextJS frontend for the Ch<sub>AI</sub>nBench project. See deployed site at [brainBench.vercel.app](https://brainBench.vercel.app).
 
 ## Local Development
 
 ### Pull Repository
 
 ```zsh
-git clone https://github.com/inference-labs-inc/chainBench.git
+git clone https://github.com/inference-labs-inc/brainBench.git
 ```
 
 ### Navigate to the `site` directory
 
 ```zsh
-cd chainBench/site
+cd brainBench/site
 ```
 
 ### Install Dependencies

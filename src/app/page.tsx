@@ -36,7 +36,7 @@ export default function Home() {
           <Box px={4}>
             <Box as={VStack} justify='start' align='start' spacing={4} p={4}>
               <Heading fontSize='xx-large'>
-                ch<sub>AI</sub>nBench
+                br<sub>AI</sub>nBench
               </Heading>
               <HStack>
                 <Heading fontSize='medium'>By</Heading>
@@ -61,7 +61,7 @@ export default function Home() {
               rightIcon={<ExternalLinkIcon />}
               textDecoration='none !important'
               variant='ghost'
-              href='https://github.com/inference-labs-inc/chainBench'
+              href='https://github.com/inference-labs-inc/brainBench'
               target='_blank'
               fontWeight='600'
               display={{ base: 'none', md: 'flex' }}

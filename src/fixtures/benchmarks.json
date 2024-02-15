@@ -820,5 +820,142 @@
       }
     }
   },
+  "EZKL-Lilith-None": {
+    "linear_regressions": {
+      "ezkl": {
+        "memoryUsage": [],
+        "proofSize": [
+          6018, 6018, 6018, 6018, 6018, 6018, 6018, 6018, 6018, 6018
+        ],
+        "provingTime": [
+          "2.523s",
+          "2.558s",
+          "2.637s",
+          "2.615s",
+          "2.581s",
+          "2.610s",
+          "2.639s",
+          "2.614s",
+          "2.641s",
+          "2.629s"
+        ]
+      },
+      "orion": {
+        "memoryUsage": [],
+        "proofSize": [],
+        "provingTime": []
+      },
+      "riscZero": {
+        "memoryUsage": [],
+        "proofSize": [],
+        "provingTime": []
+      },
+      "zkml": {
+        "memoryUsage": [],
+        "proofSize": [],
+        "provingTime": []
+      }
+    },
+    "random_forests": {
+      "ezkl": {
+        "memoryUsage": [],
+        "proofSize": [
+          8258, 8258, 8258, 8258, 8258, 8258, 8258, 8258, 8258, 8258
+        ],
+        "provingTime": [
+          "5.852s",
+          "5.942s",
+          "5.897s",
+          "6.850s",
+          "5.909s",
+          "5.966s",
+          "5.990s",
+          "5.872s",
+          "6.920s",
+          "6.640s"
+        ]
+      },
+      "riscZero": {
+        "memoryUsage": [],
+        "proofSize": [],
+        "provingTime": []
+      },
+      "zkml": {
+        "memoryUsage": [],
+        "proofSize": [],
+        "provingTime": []
+      }
+    },
+    "svm_classifications": {
+      "ezkl": {
+        "memoryUsage": [],
+        "proofSize": [
+          7170, 7170, 7170, 7170, 7170, 7170, 7170, 7170, 7170, 7170
+        ],
+        "provingTime": [
+          "2.462s",
+          "2.509s",
+          "2.303s",
+          "2.210s",
+          "2.303s",
+          "2.334s",
+          "2.461s",
+          "2.439s",
+          "2.290s",
+          "2.193s"
+        ]
+      },
+      "orion": {
+        "memoryUsage": [],
+        "proofSize": [],
+        "provingTime": []
+      },
+      "riscZero": {
+        "memoryUsage": [],
+        "proofSize": [],
+        "provingTime": []
+      },
+      "zkml": {
+        "memoryUsage": [],
+        "proofSize": [],
+        "provingTime": []
+      }
+    },
+    "te_regressions": {
+      "ezkl": {
+        "memoryUsage": [],
+        "proofSize": [
+          6082, 6082, 6082, 6082, 6082, 6082, 6082, 6082, 6082, 6082
+        ],
+        "provingTime": [
+          "0.644s",
+          "0.598s",
+          "0.626s",
+          "0.647s",
+          "0.606s",
+          "0.689s",
+          "0.627s",
+          "0.607s",
+          "0.609s",
+          "0.715s"
+        ]
+      },
+      "orion": {
+        "memoryUsage": [],
+        "proofSize": [],
+        "provingTime": []
+      },
+      "riscZero": {
+        "memoryUsage": [],
+        "proofSize": [],
+        "provingTime": []
+      },
+      "zkml": {
+        "memoryUsage": [],
+        "proofSize": [],
+        "provingTime": []
+      }
+    }
+  },
   "meta": { "lastUpdated": "2024-02-13T22:07:01+0000" }
 }

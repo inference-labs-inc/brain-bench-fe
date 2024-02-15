@@ -16,7 +16,7 @@ export const frameworks = [
     id: 'ezkl',
     name: 'EZKL',
     url: 'https://ezkl.xyz',
-    version: '7.0.0',
+    version: '8.1.7',
     apiSupport: {
       python: Support.FULL,
       javascript: Support.FULL,

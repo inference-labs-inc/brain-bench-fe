@@ -35,8 +35,7 @@ import {
 } from '@chakra-ui/react'
 import bytes from 'bytes'
 import { formatDuration, intervalToDuration } from 'date-fns'
-import { upperFirst } from 'lodash'
-import NextLink from 'next/link'
+import { isEmpty, upperFirst } from 'lodash'
 import { useState } from 'react'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 import ComparisonBarChart, { labelForMetric } from './Charts'
@@ -108,9 +107,10 @@ const getChartData = (machine: string) =>
       return Object.entries(valuesByFramework)
         .map(([framework, values]) => {
           return Object.entries(values as object).map(([metric, value]) => {
-            const postfix = ['proofSize', 'memoryUsage'].includes(metric)
-              ? 'kb'
-              : 's'
+            let postfix = 'kb'
+            if (metric == 'provingTime') {
+              postfix = 's'
+            }
 
             if (Array.isArray(value)) {
               const len = value.length
@@ -119,6 +119,12 @@ const getChartData = (machine: string) =>
                 if (typeof b === 'string') b = +b.replace(postfix, '')
                 return a + b
               }, 0)
+
+              if (metric === 'memoryUsage' && !isNaN(value)) {
+                value = value / 1024
+                postfix = 'mb'
+              }
+
               return {
                 framework,
                 metric,
@@ -217,33 +223,6 @@ export const LanguageSupportDescription = ({
   </>
 )
 
-const DisabledPopoverButton = ({ name }: { name: string }) => (
-  <Popover trigger='hover' placement='top'>
-    <PopoverTrigger>
-      <Button size='sm' opacity='0.4' variant='ghost' cursor='not-allowed'>
-        {name}
-      </Button>
-    </PopoverTrigger>
-    <PopoverContent>
-      <PopoverArrow />
-      <PopoverBody>
-        <Text overflowWrap='anywhere' fontSize='sm'>
-          Follow us on &#120143; at{' '}
-          <Link
-            as={NextLink}
-            target='_blank'
-            color='blue.600'
-            href='https://twitter.com/intent/user?screen_name=inference_labs'
-          >
-            @inference_labs{' '}
-          </Link>
-          to be notified when {name} benchmarking is added.
-        </Text>
-      </PopoverBody>
-    </PopoverContent>
-  </Popover>
-)
-
 const ResultsTable = ({
   metrics = false,
   properties,
@@ -284,14 +263,16 @@ const ResultsTable = ({
                   setMachine(name)
                 }}
               >
-                {[
-                  specs.cpu,
-                  'Cores,',
-                  specs.ram,
-                  ...(specs.accelerator && specs.accelerator !== 'None'
-                    ? ['GB RAM,', specs.accelerator, 'Accelerator']
-                    : ['GB RAM']),
-                ].join(' ')}
+                {name.includes('Lilith')
+                  ? "EZKL's Lilith"
+                  : [
+                      specs.cpu,
+                      'Cores,',
+                      specs.ram,
+                      ...(specs.accelerator && specs.accelerator !== 'None'
+                        ? ['GB RAM,', specs.accelerator, 'Accelerator']
+                        : ['GB RAM']),
+                    ].join(' ')}
               </Button>
             )
           })}
@@ -347,12 +328,16 @@ const ResultsTable = ({
                     background='bws'
                     zIndex={1000}
                     bgColor={
-                      item.disabled && (!item.disabledForMetricsOnly || metrics)
+                      (item.disabled &&
+                        (!item.disabledForMetricsOnly || metrics)) ||
+                      (machine.includes('Lilith') && item.id !== 'ezkl')
                         ? disabledColor
                         : 'none'
                     }
                     backdropFilter={
-                      item.disabled && (!item.disabledForMetricsOnly || metrics)
+                      (item.disabled &&
+                        (!item.disabledForMetricsOnly || metrics)) ||
+                      (machine.includes('Lilith') && item.id !== 'ezkl')
                         ? 'blur(5px)'
                         : 'none'
                     }
@@ -364,6 +349,8 @@ const ResultsTable = ({
                           ? item.label
                             ? item.label
                             : "This framework is not yet released and couldn't be benchmarked as a result."
+                          : machine.includes('Lilith') && item.id !== 'ezkl'
+                          ? 'This framework is not supported on Lilith.'
                           : null
                       }
                     >
@@ -371,8 +358,10 @@ const ResultsTable = ({
                         <Stack spacing={2} justify='end' h='full'>
                           <HStack>
                             <Text>{item.name}</Text>
-                            {item.disabled &&
-                            (!item.disabledForMetricsOnly || metrics) ? (
+                            {(item.disabled &&
+                              (!item.disabledForMetricsOnly || metrics)) ||
+                            (machine.includes('Lilith') &&
+                              item.id !== 'ezkl') ? (
                               <WarningTwoIcon color='red.400' />
                             ) : (
                               <Icon
@@ -468,14 +457,16 @@ const ResultsTable = ({
                           key={fw.name}
                           minW={48}
                           bg={
-                            fw.disabled &&
-                            (!fw.disabledForMetricsOnly || metrics)
+                            (fw.disabled &&
+                              (!fw.disabledForMetricsOnly || metrics)) ||
+                            (machine.includes('Lilith') && fw.id !== 'ezkl')
                               ? disabledColor
                               : 'none'
                           }
                           opacity={
-                            fw.disabled &&
-                            (!fw.disabledForMetricsOnly || metrics)
+                            (fw.disabled &&
+                              (!fw.disabledForMetricsOnly || metrics)) ||
+                            (machine.includes('Lilith') && fw.id !== 'ezkl')
                               ? 0.4
                               : 1
                           }
@@ -551,7 +542,7 @@ const ResultsTable = ({
                   <Text fontWeight='600' fontSize='md' textAlign='center'>
                     More benchmarks to be added.{' '}
                     <Link
-                      href='https://github.com/inference-labs-inc/chainBench/pulls'
+                      href='https://github.com/inference-labs-inc/brainBench/pulls'
                       textDecor='underline'
                     >
                       Submit a PR
@@ -578,7 +569,7 @@ const ResultsTable = ({
         <Text fontWeight={400}>
           Notice something incorrect?{' '}
           <Link
-            href='https://github.com/inference-labs-inc/chainBench'
+            href='https://github.com/inference-labs-inc/brainBench'
             fontWeight={600}
           >
             Let us know
@@ -600,16 +591,26 @@ const ResultsTable = ({
                     {upperFirst(model.split('_').join(' '))}
                   </Heading>
                   {['memoryUsage', 'proofSize', 'provingTime'].map((metric) => {
-                    const data = getChartData(machine).filter(
-                      (d) => d?.model === model && d?.metric === metric
+                    let data = getChartData(machine).filter(
+                      (d) =>
+                        d?.model === model &&
+                        d?.metric === metric &&
+                        d?.framework !== 'zkml'
                     )
+
+                    if (isEmpty(data) || data.every((data) => !data?.value))
+                      return null
 
                     return (
                       <Box key={metric} mb={4}>
                         <Heading size='sm' mb={2} fontWeight='bold'>
                           {labelForMetric.get(metric)}
                         </Heading>
-                        <ComparisonBarChart propertyName='value' data={data} />
+                        <ComparisonBarChart
+                          propertyName='value'
+                          data={data}
+                          isLilith={machine.includes('Lilith')}
+                        />
                       </Box>
                     )
                   })}
