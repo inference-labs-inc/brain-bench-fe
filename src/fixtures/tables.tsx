@@ -201,7 +201,6 @@ export const metrics: any[] = Object.entries(benchmarks)
         },
         info: {
           orion: "Proof size couldn't be calculated for orion.",
-          riscZero: "Proof size couldn't be calculated for risc0.",
         },
       },
       {
