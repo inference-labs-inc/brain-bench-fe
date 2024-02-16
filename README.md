@@ -44,3 +44,4 @@ Our frontend was constructed on the foundation that Polybase created for [zkBenc
 - [Polybase's zkBench.dev frontend](https://github.com/polybase/zk-benchmarks)
 
 [EZKL's ZKML Benchmarking Suite]: https://github.com/zkonduit/zkml-framework-benchmarks
+[brain-bench-runner]: https://github.com/inference-labs-inc/brain-bench-runner
