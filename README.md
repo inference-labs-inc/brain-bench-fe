@@ -1,4 +1,4 @@
-# BrainBench (frontend)
+# brain-bench-fe
 
 NextJS frontend for the BrainBench project. See deployed site at [BrainBench.vercel.app](https://BrainBench.vercel.app).
 
