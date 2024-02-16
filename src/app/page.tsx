@@ -18,6 +18,7 @@ import {
   Link,
   Spacer,
   Stack,
+  Text,
   VStack,
   useColorModeValue,
 } from '@chakra-ui/react'
@@ -29,13 +30,21 @@ import Faq from '../mkd/faq.mdx'
 export default function Home() {
   const logo = useColorModeValue(logo_light, logo_dark)
   const bench = useColorModeValue(bench_light, bench_dark)
+  const aiColor = useColorModeValue('black', 'white')
+  const titleColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800')
   return (
     <main>
       <Box mb={20}>
         <Flex>
           <Box px={4}>
             <Box as={VStack} justify='start' align='start' spacing={4} p={4}>
-              <Heading fontSize='xx-large'>BrainBench</Heading>
+              <Heading fontSize='xx-large' color={titleColor}>
+                Br
+                <Text as='span' color={aiColor}>
+                  ai
+                </Text>
+                nBench
+              </Heading>
               <HStack>
                 <Heading fontSize='medium'>By</Heading>
                 <Flex maxW={125}>
