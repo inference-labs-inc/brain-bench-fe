@@ -1,6 +1,6 @@
 # BrainBench (frontend)
 
-NextJS frontend for the Ch<sub>AI</sub>nBench project. See deployed site at [BrainBench.vercel.app](https://BrainBench.vercel.app).
+NextJS frontend for the BrainBench project. See deployed site at [BrainBench.vercel.app](https://BrainBench.vercel.app).
 
 ## Local Development
 
