@@ -4,7 +4,6 @@ import {
   BarChart,
   CartesianGrid,
   Legend,
-  ReferenceArea,
   Tooltip,
   XAxis,
   YAxis,
@@ -30,14 +29,12 @@ const ComparisonBarChart: React.FC<ComparisonBarChartProps> = ({
 
   useEffect(() => {
     setBarData(
-      data
-        .map((d) => {
-          return {
-            name: d.framework,
-            value: d.value,
-          }
-        })
-        .filter((d) => (isLilith && !d.name.includes('ezkl') ? false : true))
+      data.map((d) => {
+        return {
+          name: d.framework,
+          value: d.value,
+        }
+      })
     )
   }, [data])
 
@@ -63,19 +60,6 @@ const ComparisonBarChart: React.FC<ComparisonBarChartProps> = ({
         dataKey='value'
         fill='#8884d8'
       />
-      {barData.map((entry, index) =>
-        !entry.value ? (
-          <ReferenceArea
-            key={`ref-${index}`}
-            x1={entry.name}
-            x2={entry.name}
-            y1={0}
-            y2={999999}
-            fill='rgba(0, 0, 0, 0.4)' // Adjust color and opacity as needed
-            ifOverflow='extendDomain'
-          />
-        ) : null
-      )}
     </BarChart>
   )
 }

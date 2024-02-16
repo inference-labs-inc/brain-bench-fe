@@ -195,7 +195,7 @@ export const metrics: any[] = Object.entries(benchmarks)
                   (val) =>
                     `${+(typeof val === 'string'
                       ? +val.replace('kb', '')
-                      : +val / 1024)}`
+                      : +val / 1024)}kb`
                 ),
                 '',
                 sizeFormatter

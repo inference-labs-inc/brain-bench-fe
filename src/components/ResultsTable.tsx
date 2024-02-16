@@ -108,11 +108,12 @@ const getChartData = (machine: string) =>
         .map(([framework, values]) => {
           return Object.entries(values as object).map(([metric, value]) => {
             let postfix = 'kb'
+            let convertValueFromKBtoBytes = false
             if (metric == 'provingTime') {
               postfix = 's'
             }
-            if (metric == 'proofSize') {
-              postfix = 'b'
+            if (metric == 'proofSize' && typeof value[0] === 'string') {
+              convertValueFromKBtoBytes = true
             }
 
             if (Array.isArray(value)) {
@@ -126,6 +127,11 @@ const getChartData = (machine: string) =>
               if (metric === 'memoryUsage' && !isNaN(value)) {
                 value = value / 1024
                 postfix = 'mb'
+              }
+
+              if (convertValueFromKBtoBytes) {
+                value = value * 1024
+                postfix = 'b'
               }
 
               return {
