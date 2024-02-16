@@ -6,7 +6,7 @@ import './globals.css'
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
 export const metadata: Metadata = {
-  title: 'brainBench',
+  title: 'BrainBench',
   metadataBase: new URL(BASE_URL),
   icons: [
     {
@@ -44,20 +44,20 @@ export const metadata: Metadata = {
     },
   ],
   description: 'Your benchmark for on-chain inference',
-  applicationName: 'brainBench',
-  keywords: 'brainBench, zkml, zkmlBench, zkmlBenchmarks',
+  applicationName: 'BrainBench',
+  keywords: 'BrainBench, zkml, zkmlBench, zkmlBenchmarks',
   authors: [{ name: 'Inference Labs Inc.', url: 'https://inferencelabs.com' }],
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: BASE_URL,
-    siteName: 'brainBench',
+    siteName: 'BrainBench',
     images: [
       {
         url: `${BASE_URL}/OG.png`,
         width: 1200,
         height: 630,
-        alt: 'brainBench',
+        alt: 'BrainBench',
       },
     ],
   },
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
         url: `${BASE_URL}/OG.png`,
         width: 1200,
         height: 630,
-        alt: 'brainBench',
+        alt: 'BrainBench',
       },
     ],
   },

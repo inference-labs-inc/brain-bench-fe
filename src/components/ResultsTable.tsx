@@ -551,7 +551,7 @@ const ResultsTable = ({
                   <Text fontWeight='600' fontSize='md' textAlign='center'>
                     More benchmarks to be added.{' '}
                     <Link
-                      href='https://github.com/inference-labs-inc/brainBench/pulls'
+                      href='https://github.com/inference-labs-inc/BrainBench/pulls'
                       textDecor='underline'
                     >
                       Submit a PR
@@ -578,7 +578,7 @@ const ResultsTable = ({
         <Text fontWeight={400}>
           Notice something incorrect?{' '}
           <Link
-            href='https://github.com/inference-labs-inc/brainBench'
+            href='https://github.com/inference-labs-inc/BrainBench'
             fontWeight={600}
           >
             Let us know
