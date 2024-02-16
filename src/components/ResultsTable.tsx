@@ -111,6 +111,9 @@ const getChartData = (machine: string) =>
             if (metric == 'provingTime') {
               postfix = 's'
             }
+            if (metric == 'proofSize') {
+              postfix = 'b'
+            }
 
             if (Array.isArray(value)) {
               const len = value.length

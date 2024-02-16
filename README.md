@@ -1,4 +1,4 @@
-# Br<sub>AI</sub>nBench (frontend)
+# BrainBench (frontend)
 
 NextJS frontend for the Ch<sub>AI</sub>nBench project. See deployed site at [brainBench.vercel.app](https://brainBench.vercel.app).
 

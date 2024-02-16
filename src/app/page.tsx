@@ -35,9 +35,7 @@ export default function Home() {
         <Flex>
           <Box px={4}>
             <Box as={VStack} justify='start' align='start' spacing={4} p={4}>
-              <Heading fontSize='xx-large'>
-                br<sub>AI</sub>nBench
-              </Heading>
+              <Heading fontSize='xx-large'>BrainBench</Heading>
               <HStack>
                 <Heading fontSize='medium'>By</Heading>
                 <Flex maxW={125}>

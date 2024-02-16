@@ -15,7 +15,7 @@ interface ComparisonBarChartProps {
 }
 
 export const labelForMetric = new Map([
-  ['proofSize', 'Proof Size in KB'],
+  ['proofSize', 'Proof Size in Bytes'],
   ['memoryUsage', 'Memory Usage in MB'],
   ['provingTime', 'Proving Time in Seconds'],
 ])
