@@ -11,13 +11,13 @@ If you would like to add or modify existing benchmarks, open a PR against our be
 ### Pull Repository
 
 ```zsh
-git clone https://github.com/inference-labs-inc/BrainBench.git
+git clone https://github.com/inference-labs-inc/brain-bench-fe.git
 ```
 
 ### Navigate to the `site` directory
 
 ```zsh
-cd BrainBench/site
+cd brain-bench-fe/site
 ```
 
 ### Install Dependencies

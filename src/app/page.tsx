@@ -68,7 +68,7 @@ export default function Home() {
               rightIcon={<ExternalLinkIcon />}
               textDecoration='none !important'
               variant='ghost'
-              href='https://github.com/inference-labs-inc/BrainBench'
+              href='https://github.com/inference-labs-inc/brain-bench-runner'
               target='_blank'
               fontWeight='600'
               display={{ base: 'none', md: 'flex' }}
