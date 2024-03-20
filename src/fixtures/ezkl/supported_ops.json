@@ -168,5 +168,6 @@
   "Sumsquare",
   "ThresholdedRelu",
   "Trilu",
-  "GlobalLpPool"
+  "GlobalLpPool",
+  "LpPool"
 ]
